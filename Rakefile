@@ -2,6 +2,12 @@
 
 require 'rubygems'
 require 'bundler'
+require 'semver'
+
+def s_version
+  SemVer.find.format "%M.%m.%p%s"
+end
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -17,11 +23,20 @@ Juwelier::Tasks.new do |gem|
   gem.name = "ansible-powerplay"
   gem.homepage = "http://github.com/flajann2/ansible-powerplay"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Powerplay enables you to run Ansible playbooks in parallel. }
+  gem.description = %Q{Ansible Powerplay, by way of its DSL, allows you to
+                       specify your Ansible playbooks and their vars, and common
+                       vars to all, so that you can run your
+                       indeoendent playbooks in full parallel.}
   gem.email = "fred.mitchell@gmx.de"
   gem.authors = ["Fred Mitchell"]
-  # dependencies defined in Gemfile
+  gem.version = s_version
+  gem.required_ruby_version = '>= 2.0'
+
+  # Exclusions
+  gem.files.exclude 'foo/**/*', 'rdoc/*',
+                    '.idea/**/*', '.idea/**/.*', '.yardoc/**/*',
+                    'Guardfile'
 end
 Juwelier::RubygemsDotOrgTasks.new
 
