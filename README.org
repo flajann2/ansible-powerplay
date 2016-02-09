@@ -1,0 +1,39 @@
+* Ansible Powerplay
+
+  Powerplay allows you to run multiple Ansible playbooks in
+  parallel. Depending on how you organize your playbooks,
+  this can be a solid win. I basically before this had been
+  doing a playbook with multiple includes for other playbooks
+  representing different servers in our stack. Playbook launching
+  of playbooks is slow and very serial.
+
+  Basically, the playbooks are all contained, 
+  so no interdependencies. And in my case, running in the
+  cloud, so no reason why they can't be running in parallel
+
+  Powerplay allows you to specify vars common
+  to all playbooks, and also vars specific
+  to some playbooks so by which you can
+  make your setup very DRY.
+
+** Installation
+
+** Use
+
+** Examples
+
+** Contributing to ansible-powerplay
+ 
+   + Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
+   + Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
+   + Fork the project.
+   + Start a feature/bugfix branch.
+   + Commit and push until you are happy with your contribution.
+   + Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
+   + Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+== Copyright
+
+Copyright (c) 2016 Fred Mitchell. See LICENSE.txt for
+further details.
+
