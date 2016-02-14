@@ -75,7 +75,6 @@ module Powerplay
 
       def group name, desc=nil, &block
         @groups ||= []
-        require 'pry'; binding.pry #DEBUGGING
         groups << DslGroup.new(name, desc, &block)
       end
 
