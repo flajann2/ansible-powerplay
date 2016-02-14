@@ -28,8 +28,8 @@ playbooks :development do
   end
 
   group :second, "our second group" do
-    book :rabbit, "rabbitmq_cluster.yml" do |b|
-      b.krell_type "t2.medium"
+    book :rabbit, "rabbitmq_cluster.yml" do
+      krell_type "t2.medium"
     end
 
     book :es_cluster, "elasticsearch_cluster.yml" do

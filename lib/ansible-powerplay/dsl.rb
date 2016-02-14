@@ -52,14 +52,23 @@ module Powerplay
     end
 
     class DslBook < Dsl
+      attr :yaml
+
+      def initialize(type, yaml, desc=nil, &block)
+        super(type, desc, &block)
+        @yaml = yaml
+        _bump
+        instance_eval(&block) if block_given?
+        @config = _dip
+      end
     end
 
     class DslGroup < Dsl
       attr :books
 
-      def book(type, desc, &block)
-        books ||= []
-        books << DslBook.new(type, desc, &block)
+      def book(type, yaml, desc=nil, &block)
+        @books ||= []
+        books << DslBook.new(type, yaml, desc, &block)
       end
 
       def initialize(type, desc, &block)
