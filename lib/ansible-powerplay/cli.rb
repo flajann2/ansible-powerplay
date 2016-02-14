@@ -14,13 +14,14 @@ module Powerplay
         by default. 
       LONGDESC
       option :tmux, type: :boolean, aliases: '-m', banner: "send output to all tmux panes in the current window"
-      option :play, type: :string, banner: "Which playbook shelf"
+      option :play, type: :string, banner: "[NAME|all] Which playbook shelf", required: true
       option :dryrun, type: :boolean, banner: "Dry run, do not actually execute."
       def play(script)
-        puts "script %s " % [script]
         DSL::_global[:options] = options
+        puts "script %s " % [script] if DSL::_global[:options][:verbose] >= 1
         load script, true
         pp DSL::_global if DSL::_global[:options][:verbose] >= 3
+        Play::Ansible::power_run
       end
       
       desc 'ttys', 'list all the TMUX ptys on the current window.'

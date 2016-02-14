@@ -78,7 +78,7 @@ module Powerplay
       end
     end
 
-    class DslPlaybooks < Dsl
+    class DslPlaybook < Dsl
       attr :groups
 
       def group name, desc=nil, &block
@@ -89,7 +89,7 @@ module Powerplay
       def initialize (type, desc, &block)
         super
         _bump
-        instance_eval &block
+        instance_eval( &block )
         @config = _dip
       end
     end
@@ -100,7 +100,7 @@ module Powerplay
 
     def playbooks(type=:vars, desc=nil, &block)
       _global[:playbooks] ||= {}
-      _global[:playbooks][type] = DslPlaybooks.new type, desc, &block
+      _global[:playbooks][type] = DslPlaybook.new type, desc, &block
     end
   end
 end

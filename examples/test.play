@@ -2,8 +2,8 @@
 # Test script for the Powerplay DSL
 
 # This is a global system configuration
-configuration :system do |c|
-  c.playbook_directory "playbooks"
+configuration :system do
+  playbook_directory "playbooks"
 end
 
 # A playbook "shelf" (playbooks) must be explicitely invoked from
