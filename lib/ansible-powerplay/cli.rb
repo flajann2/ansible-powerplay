@@ -17,6 +17,7 @@ module Powerplay
       def play(script)
         puts "script %s " % [script]
         load script, true
+        pp DSL::_global
       end
     end
   end
