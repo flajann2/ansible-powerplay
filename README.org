@@ -22,17 +22,21 @@
   Ansible includes.
 
 ** Features and Cavets
-*** Iteration 1
-    We are thowing this intital release
-    together under time pressure, so we are
-    going to leverage tmux for the output
-    for now. It will grab all the panes in the
-    current window and output to each of them.
+*** Integration with TMUX
+    When running multiple Ansible Playbooks concurrently,
+    one would like to be able to see the output of each
+    in a reasonable manner. To faciliate this in this
+    initial realse, we shall make heavy use of TMUX panes
+    to dump the output.
 
-    Later, we shall refine this or use direct
-    rendering into the text area and eliminate
-    reliance of tmux. But for now, this will
-    get the job done already.
+    So basically, you need as many panes as you have
+    concurrent Ansible Playbooks in this initial release. In 
+    subsequent releases, Curses will be directly
+    leveraged to create "tabs" for the multiple output
+    streams. We may even do this, still, through TMUX.
+
+    Your input on this is strongly encouarged. We will not
+    be supporting Screen at all. Sorry.
 
 ** DSL Terminology & Documentation
 *** DSL
