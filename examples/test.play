@@ -12,12 +12,12 @@ end
 playbooks :development do
 
   # sṕecific configuration for :development
-  configuration do |c|
-    c.stack :development
-    c.krell_type "t2.small"
-    c.servers 1
-    c.rolling 3
-    c.krell_disk_size 20
+  configuration do 
+    stack :development
+    krell_type "t2.small"
+    servers 1
+    rolling 3
+    krell_disk_size 20
   end
 
   # Groups are executed serially.
@@ -32,13 +32,13 @@ playbooks :development do
       b.krell_type "t2.medium"
     end
 
-    book :es_cluster, "elasticsearch_cluster.yml" do |b|
-      b.esver "1.7.4"
-      b.cluster_name :es
-      b.servers 3
-      b.heapsize "2g"
-      b.krell_type "t2.medium"
-      b.krell_disk_size 200
+    book :es_cluster, "elasticsearch_cluster.yml" do
+      esver "1.7.4"
+      cluster_name :es
+      servers 3
+      heapsize "2g"
+      krell_type "t2.medium"
+      krell_disk_size 200
     end
   end
 end

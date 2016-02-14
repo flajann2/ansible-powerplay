@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 module Powerplay
   module DSL
     @@config_stack = [{}]
 
     def _bump
-      @@config_stack.push @@config_stack.clone
+      @@config_stack.push @@config_stack.last.clone
     end
 
     def _dip
@@ -14,7 +15,7 @@ module Powerplay
       @@config_stack.last
     end
 
-    class DslConfiguration 
+    class Dsl
       def method_missing(name, *args, &block)
         puts "missing: %s %s " % [name, args]
         DSL::_config[name] = args
@@ -23,9 +24,20 @@ module Powerplay
       def self.respond_to?(name, include_private = false)
         true
       end
+    end
+
+    class DslConfiguration < Dsl
+      def initialize (type, desc, &block)
+        instance_eval &block
+      end
+    end
+
+    class DslPlaybooks < Dsl
+      def group name, desc=nil, &block
+      end
 
       def initialize (type, desc, &block)
-        block.(self)
+        instance_eval &block
       end
     end
 
@@ -35,7 +47,8 @@ module Powerplay
 
     def playbooks(type=:vars, desc=nil, &block)
       _bump
-      block.()
+      DslPlaybooks.new type, desc, &block
+      _dip
     end
   end
 end
