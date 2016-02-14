@@ -14,10 +14,13 @@ module Powerplay
         by default. 
       LONGDESC
       option :tmux, type: :boolean, aliases: '-m', banner: "send output to all tmux panes in the current window"
+      option :play, type: :string, banner: "Which playbook shelf"
+      option :dryrun, type: :boolean, banner: "Dry run, do not actually execute."
       def play(script)
         puts "script %s " % [script]
         load script, true
         pp DSL::_global
+        pp options
       end
     end
   end

@@ -15,6 +15,12 @@
   to all playbooks, and also vars specific
   to some playbooks so by which you can
   make your setup very DRY.
+
+  All the Ansible playbooks are executed in seperate processes,
+  and thus avoiding a number of the "side effects" you would
+  normally encounter with running multiple playbooks with
+  Ansible includes.
+
 ** Features and Cavets
 *** Iteration 1
     We are thowing this intital release
@@ -27,6 +33,32 @@
     rendering into the text area and eliminate
     reliance of tmux. But for now, this will
     get the job done already.
+
+** DSL Terminology & Documentation
+*** DSL
+    The DSL is straightforward as possible,
+    simple and elegant to allow you to write 
+    your Powerplays in a DRY manner.
+**** configuration
+     You can intersperse configuration blocks
+     anywhere, and the expected nested scoping
+     will take effect.
+**** playbooks
+     playbooks are a collection of groups, and
+     each group are normally executed serially. This will
+     allow you to organize your plays in an intelligent
+     manner to deploy and manage resources and assets
+     that may have to be done in a serial manner.
+**** group
+     A group is a collection of books that all execute
+     in parallel. Books are required to be independent of
+     each other.
+**** book
+     A book has a direct correspondence to an Ansible
+     playbook, and will execute that Yaml file
+     given the configuration variables as parameters.
+
+     Here is where var inheritance becomes useful.
 
 ** Installation
 

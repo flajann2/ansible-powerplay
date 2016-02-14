@@ -6,7 +6,7 @@ configuration :system do |c|
   c.playbook_directory "playbooks"
 end
 
-# A playbook must be explicitely invoked from
+# A playbook "shelf" (playbooks) must be explicitely invoked from
 # command line by default. Playbooks will execute
 # in parallel unless otherwise specified.
 playbooks :development do
