@@ -22,6 +22,11 @@ module Powerplay
         pp DSL::_global
         pp options
       end
+      
+      desc 'ttys', 'list all the TMUX ptys on the current window.'
+      def ttys
+        puts Play::Tmux::get_pane_ptys
+      end
     end
   end
 end
