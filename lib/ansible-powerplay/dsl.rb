@@ -24,7 +24,6 @@ module Powerplay
       attr :config, :type, :desc
 
       def method_missing(name, *args, &block)
-        puts "missing: %s %s " % [name, args]
         DSL::_config[name] = args
       end
 

@@ -5,7 +5,7 @@ include Powerplay::DSL
 module Powerplay
   module Cli
     class Main < Thor
-      class_option :verbose, type: :numeric, banner: '[1|2|3]', aliases: '-v'
+      class_option :verbose, type: :numeric, banner: '[1|2|3]', aliases: '-v', default: 0
 
       desc 'play <script>', 'Run the powerplay script.'
       long_desc <<-LONGDESC
@@ -18,9 +18,9 @@ module Powerplay
       option :dryrun, type: :boolean, banner: "Dry run, do not actually execute."
       def play(script)
         puts "script %s " % [script]
+        DSL::_global[:options] = options
         load script, true
-        pp DSL::_global
-        pp options
+        pp DSL::_global if DSL::_global[:options][:verbose] >= 3
       end
       
       desc 'ttys', 'list all the TMUX ptys on the current window.'

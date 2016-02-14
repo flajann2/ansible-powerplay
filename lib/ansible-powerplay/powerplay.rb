@@ -5,9 +5,16 @@ module Powerplay
     module Tmux
       # get a list of the ptys 
       def self.get_pane_ptys
-        %x[tmux list-panes -F '\#{pane_tty},'].inspect.chop.split(",")
-        .map{ |s| s.strip.sub(/\\n|\"/, '') }
+        %x[tmux list-panes -F '\#{pane_tty},']
+          .inspect
+          .chop
+          .split(",")
+          .map{ |s| s.strip.sub(/\\n|\"/, '') }
       end
+    end
+
+    module Ansible
+      # 
     end
   end
 end
