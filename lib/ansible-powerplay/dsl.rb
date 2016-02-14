@@ -51,8 +51,32 @@ module Powerplay
       end
     end
 
+    class DslBook < Dsl
+    end
+
+    class DslGroup < Dsl
+      attr :books
+
+      def book(type, desc, &block)
+        books ||= []
+        books << DslBook.new(type, desc, &block)
+      end
+
+      def initialize(type, desc, &block)
+        super
+        _bump
+        instance_eval &block
+        @config = _dip
+      end
+    end
+
     class DslPlaybooks < Dsl
+      attr :groups
+
       def group name, desc=nil, &block
+        @groups ||= []
+        require 'pry'; binding.pry #DEBUGGING
+        groups << DslGroup.new(name, desc, &block)
       end
 
       def initialize (type, desc, &block)
@@ -64,11 +88,12 @@ module Powerplay
     end
 
     def configuration(type=:vars, desc=nil, &block)
-      @@global_config[type] = DslConfiguration.new(type, desc, &block).config
+      _global[type] = DslConfiguration.new(type, desc, &block).config
     end
 
     def playbooks(type=:vars, desc=nil, &block)
-      DslPlaybooks.new type, desc, &block
+      _global[:playbooks] ||= {}
+      _global[:playbooks][type] = DslPlaybooks.new type, desc, &block
     end
   end
 end
