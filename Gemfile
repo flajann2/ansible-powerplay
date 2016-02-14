@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+gem 'thor', '~> 0'
+
 group :development do
   gem "rspec",          "~> 2"
   gem "yard",           "~> 0"
@@ -8,6 +10,7 @@ group :development do
   gem "juwelier",       "~> 2"
   gem "simplecov",      ">= 0"
   gem 'semver',         '~> 1'
+  gem 'guard', '~> 2'
   gem 'guard-rspec',    '~> 1'
 
   gem 'pry',            '~> 0'

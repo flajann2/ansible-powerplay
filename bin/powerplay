@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+PP_PATH = File.expand_path '..', File.dirname(__FILE__)
+PP_EXECUTABLE = File.expand_path 'bin/powerplay', Dir.pwd
+
+$:.unshift File.join([PP_PATH, 'lib'])
+
+require 'ansible-powerplay/cli'
+
+Powerplay::Cli::Main.start

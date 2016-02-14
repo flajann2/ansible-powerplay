@@ -15,6 +15,18 @@
   to all playbooks, and also vars specific
   to some playbooks so by which you can
   make your setup very DRY.
+** Features and Cavets
+*** Iteration 1
+    We are thowing this intital release
+    together under time pressure, so we are
+    going to leverage tmux for the output
+    for now. It will grab all the panes in the
+    current window and output to each of them.
+
+    Later, we shall refine this or use direct
+    rendering into the text area and eliminate
+    reliance of tmux. But for now, this will
+    get the job done already.
 
 ** Installation
 
@@ -36,4 +48,15 @@
 
    Copyright (c) 2016 Fred Mitchell. See LICENSE.txt for
    further details.
+
+** Personal Notes
+   This is my personal scratchpad. Please
+   ignore what you see after this point,
+   as it is not gauranteed to make sense to you
+   or to be kept up to date.
+*** Tmux commnad to return the ptys and other info
+    #+BEGIN_SRC bash
+    tmux list-panes -F '#{pane_id} #{pane_tty}'
+    tmux list-panes -F '#{pane_id} #{pane_tty} #{pane_right} #{pane_left} #{pane_top} #{pane_bottom}'
+    #+END_SRC
 
