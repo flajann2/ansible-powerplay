@@ -1,3 +1,5 @@
 require 'thor'
 require 'semver'
+require 'pp'
 require_relative 'ansible-powerplay/powerplay'
+require_relative 'ansible-powerplay/dsl'
