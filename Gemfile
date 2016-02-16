@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 
 gem 'thor', '~> 0'
+gem 'concurrent-ruby', require: 'concurrent'
+gem 'term-ansicolor'
 
 group :development do
   gem "rspec",          "~> 2"

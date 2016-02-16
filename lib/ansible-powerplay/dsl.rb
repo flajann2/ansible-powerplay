@@ -45,7 +45,7 @@ module Powerplay
     class DslConfiguration < Dsl
       def initialize(type, desc, &block)
         super
-        instance_eval &block
+        instance_eval( &block )
         @config = _config.clone
       end
     end
@@ -59,6 +59,12 @@ module Powerplay
         _bump
         instance_eval(&block) if block_given?
         @config = _dip
+      end
+
+      # Ansible playbook parameters
+      # TODO: there is a bogus playbook_directory param here.
+      def aparams
+        config.map{ |k,v| "#{k}=#{v.first}"}.join(' ')
       end
     end
 

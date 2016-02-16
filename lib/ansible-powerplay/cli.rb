@@ -26,7 +26,7 @@ module Powerplay
       
       desc 'ttys', 'list all the TMUX ptys on the current window.'
       def ttys
-        puts Play::Tmux::get_pane_ptys
+        puts Play::Tmux::pane_ptys
       end
     end
   end
