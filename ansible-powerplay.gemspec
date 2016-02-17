@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.org",
     "Rakefile",
+    "SCRATCHPAD.org",
     "ansible-powerplay.gemspec",
     "bin/powerplay",
     "lib/ansible-powerplay.rb",
