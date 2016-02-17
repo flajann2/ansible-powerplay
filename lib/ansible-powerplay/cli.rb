@@ -16,6 +16,7 @@ module Powerplay
       option :tmux, type: :boolean, aliases: '-m', banner: "send output to all tmux panes in the current window"
       option :play, type: :string, banner: "[NAME|all] Which playbook shelf", required: true
       option :group, type: :string, banner: "[NAME|all] Which group to execute", default: "all"
+      option :congroups, type: :boolean, aliases: '-c', banner: "Run the groups themselves concurrently"
       option :book, type: :string, banner: "[NAME|all] Which book to execute", default: "all"
       option :dryrun, type: :boolean, banner: "Dry run, do not actually execute."
       def play(script)

@@ -50,36 +50,43 @@ module Powerplay
       def self.power_run
         buch = Play::clopts[:book].to_sym
         dryrun = Play::clopts[:dryrun]
-        
+        congroups = Play::clopts[:congroups]
         playbooks do |pname, playbook|
+          thrgroups = []
           puts "PLAYBOOK #{pname} (group=#{Play::clopts[:group]}) -->"
           groups playbook do |group|
-            puts "    GROUP #{group.type} (book=#{buch}) -->"
-            thrs = []
-            errors = []
-            group.books.zip(Tmux.pane_ptys) do |book, tty|
-              tty ||= Tmux.pane_ptys.last
-              if buch == :all or book.type == buch
-                puts "        BOOK #{book.type}"
-                apcmd = %|#{PLAYBOOK} #{OPTS} #{book.config[:playbook_directory].first}/#{book.yaml} --extra-vars "#{book.aparams}" >#{tty}|
-                thrs << Thread.new {
-                  std, status = Open3.capture2e apcmd
-                  errors << [book.yaml, apcmd, std] unless status.success?
-                } unless dryrun
+            tg = nil
+            thrgroups << (tg = Thread.new { 
+              puts "    GROUP #{group.type} (book=#{buch}, cg=#{congroups}) -->"
+              thrbooks = []
+              errors = []
+              group.books.zip(Tmux.pane_ptys) do |book, tty|
+                tty ||= Tmux.pane_ptys.last
+                if buch == :all or book.type == buch
+                  puts "        BOOK #{book.type}"
+                  apcmd = %|#{PLAYBOOK} #{OPTS} #{book.config[:playbook_directory].first}/#{book.yaml} --extra-vars "#{book.aparams}" >#{tty}|
+                  thrbooks << Thread.new {
+                    std, status = Open3.capture2e apcmd
+                    errors << [book.yaml, apcmd, std] unless status.success?
+                  } unless dryrun
+                end
               end
-            end
-            thrs.each{ |t| t.join }
-            unless errors.empty?
-              errors.each do |yaml, cmd, txt|
-                puts '=' * 30
-                puts ('*' * 10) + ' ' + yaml
-                puts txt
-                puts '-' * 30
-                puts cmd
+              thrbooks.each{ |t| t.join }
+              unless errors.empty?
+                errors.each do |yaml, cmd, txt|
+                  puts '=' * 30
+                  puts ('*' * 10) + ' ' + yaml
+                  puts txt
+                  puts '-' * 30
+                  puts cmd
+                end
+                exit 10
               end
-              exit 10
-            end
+            })
+            # Always wait here unless we're concurrent
+            thrgroups.join unless congroups
           end
+          thrgroups.each{ |t| t.join }
         end
       end
     end
