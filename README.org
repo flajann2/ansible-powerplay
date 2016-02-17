@@ -21,6 +21,11 @@
   normally encounter with running multiple playbooks with
   Ansible includes.
 
+  For example, here is Powerplay integrated with tmux:
+  #+CAPTION: Powerplay writing to tmux panes, one pane per playbook.
+  #+NAME: Powerplay Example
+  [[./examples/powerplay_screenshot.jpeg]]
+
 ** Features and Cavets
 *** Integration with TMUX
     When running multiple Ansible Playbooks concurrently,

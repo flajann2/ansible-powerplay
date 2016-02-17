@@ -34,7 +34,7 @@ Juwelier::Tasks.new do |gem|
   gem.required_ruby_version = '>= 2.0'
 
   # Exclusions
-  gem.files.exclude 'foo/**/*', 'rdoc/*',
+  gem.files.exclude 'foo/**/*', 'rdoc/*', 'examples/*', '*.log',
                     '.idea/**/*', '.idea/**/.*', '.yardoc/**/*',
                     'Guardfile'
 end
