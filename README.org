@@ -136,10 +136,52 @@
    earlier configuration):
 
    #+BEGIN_SRC bash
-   ansible-playbook playbooks/nat.yml --extra-vars "playbook_directory=playbooks stack=development krell_type=t2.small servers=1 rolling=3 krell_disk_size=20"
+   ansible-playbook playbooks/nat.yml \
+     --extra-vars "playbook_directory=playbooks stack=development krell_type=t2.small servers=1 rolling=3 krell_disk_size=20"
    #+END_SRC
 
+   And if our group had more book entries, as in the second 
+   example:
+
+   #+BEGIN_SRC ruby
+   group :second, "our second group" do
+     book :rabbit, "rabbitmq_cluster.yml" do
+       krell_type "t2.medium"
+     end
+
+     book :es_cluster, "elasticsearch_cluster.yml" do
+       esver "1.7.4"
+       cluster_name :es
+       servers 3
+       heapsize "2g"
+       krell_type "t2.medium"
+       krell_disk_size 200
+     end
+   end
+   #+END_SRC
+
+   Both the :rabbit and :es_cluster books would be executed
+   in parallel.
+
+*** Example .play Script
+    To play around with the example .play script,
+    Clone the [[https://github.com/flajann2/ansible-powerplay][Ansible Powerplay]] project locally:
+
+    #+BEGIN_SRC bash
+    git clone git@github.com:flajann2/ansible-powerplay.git
+    #+END_SRC
+
+    and go to the examples directory to find test.play.
+
+*** Submitting your example .play scripts
+    Please feel free to do pull requests of your
+    scripts or submit them to me as Gist snippets
+    and I will include them if they are good.
+
 ** Contributing to ansible-powerplay
+   Your parcipitation is welcome, and I will respond to your
+   pull requests in a timely fashion as long as I am not
+   pulling an "Atlas" at my current job! lol
  
    + Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
    + Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
@@ -150,6 +192,5 @@
    + Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
 ** Copyright
-
    Copyright (c) 2016 Fred Mitchell. See LICENSE.txt for
    further details.
