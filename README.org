@@ -70,10 +70,74 @@
      Here is where var inheritance becomes useful.
 
 ** Installation
+   Easy installation. From command-line:
+   #+BEGIN_SRC bash
+   gem install ansible-powerplay
+   #+END_SRC
+
+   Or from a gemfile:
+   #+BEGIN_SRC ruby
+   gem 'ansible-powerplay'
+   #+END_SRC
 
 ** Use
+   Basically, cd to the root of your Ansible directory,
+   and a .play file (see the example at: [[https://github.com/flajann2/ansible-powerplay/blob/master/examples/test.play][test.play]].
 
-** Examples
+   You can place a config clause either globally,
+   inside of playbooks, inside of groups, and the
+   variable set up this way are inherited to the inner
+   clauses, thus allowing you to keep your specifications
+   DRYer.
+
+   For example:
+   #+BEGIN_SRC ruby
+   # This is a global system configuration
+   configuration :system do
+     playbook_directory "playbooks"
+   end
+   #+END_SRC
+
+   Note that 'playbook_directory' is special, as it allows
+   you to define the directory all of your Ansible playbooks
+   can be found. You can also specify this anywhere
+   you can use the configuration clause, so you
+   may set up different playbook directories for different
+   playbook collections.
+
+   #+BEGIN_SRC ruby
+   # sṕecific configuration for :development
+   configuration do 
+    stack :development
+    krell_type "t2.small"
+    servers 1
+    rolling 3
+    krell_disk_size 20
+   end
+   #+END_SRC
+   
+   The above shows Ansible variables for my specialiezd setup
+   that is geared with work with AWS. You are free to specify
+   any variables here, which will be injected into 
+   ansible-playbook through the '--extra-vars' parameter.
+
+   Here is a group clause with a single book in it:
+
+   #+BEGIN_SRC ruby
+   # Groups are executed serially.
+   group :first, "our very first group" do
+     # Books within a group are executed in parallel,
+     # and therefore must be independent of each other.
+     book :nat, "nat.yml"
+   end
+   #+END_SRC
+
+   Which issues the following command to Ansible (based on the
+   earlier configuration):
+
+   #+BEGIN_SRC bash
+   ansible-playbook playbooks/nat.yml --extra-vars "playbook_directory=playbooks stack=development krell_type=t2.small servers=1 rolling=3 krell_disk_size=20"
+   #+END_SRC
 
 ** Contributing to ansible-powerplay
  

@@ -9,3 +9,4 @@
     tmux list-panes -F '#{pane_id} #{pane_tty}'
     tmux list-panes -F '#{pane_id} #{pane_tty} #{pane_right} #{pane_left} #{pane_top} #{pane_bottom}'
     #+END_SRC
+    
