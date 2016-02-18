@@ -13,12 +13,12 @@ module Powerplay
         script, as specified, are run in parallel
         by default. 
       LONGDESC
-      option :tmux, type: :boolean, aliases: '-m', banner: "send output to all tmux panes in the current window"
-      option :play, type: :string, banner: "[NAME|all] Which playbook shelf", required: true
-      option :group, type: :string, banner: "[NAME|all] Which group to execute", default: "all"
+      option :tmux,      type: :numeric, lazy_default: 0, aliases: '-m', banner: "[WINDOWNUMBERopt] Send output to all tmux panes in the current window, or the numeric window specified."
+      option :play,      type: :string,  aliases: '-p', banner: "[NAME|all] Which playbook shelf", required: true
+      option :group,     type: :string,  aliases: '-g', banner: "[NAME|all] Which group to execute", default: "all"
       option :congroups, type: :boolean, aliases: '-c', banner: "Run the groups themselves concurrently"
-      option :book, type: :string, banner: "[NAME|all] Which book to execute", default: "all"
-      option :dryrun, type: :boolean, banner: "Dry run, do not actually execute."
+      option :book,      type: :string,  aliases: '-b', banner: "[NAME|all] Which book to execute", default: "all"
+      option :dryrun,    type: :boolean, aliases: '-u', banner: "Dry run, do not actually execute."
       def play(script)
         DSL::_global[:options] = options
         puts "script %s " % [script] if DSL::_global[:options][:verbose] >= 1

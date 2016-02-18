@@ -10,14 +10,22 @@ module Powerplay
     end
 
     module Tmux
-      # get a list of the ptys 
+      # Get a list of the ptys
+      # Note that this code is a bit innefficient, but will only be
+      # executed once in the loop.
       def self.pane_ptys
-        @ptys ||= if Play::clopts[:tmux]
-                    %x[tmux list-panes -F '\#{pane_tty},']
+        @window = if Play::clopts.nil? or Play::clopts[:tmux] == 0
+                    ''
+                  else
+                    " -t #{Play::clopts[:tmux]} "
+                  end
+        @ptys ||= if Play::clopts.nil? or Play::clopts[:tmux]
+                    %x[tmux list-panes #{@window} -F '\#{pane_tty},']
                       .inspect
                       .chop
                       .split(",")
                       .map{ |s| s.strip.sub(/\\n|\"/, '') }
+                      .reject{ |pty| pty == %x(tty).chop }
                   else
                     [Play::DEFOUT]
                   end
