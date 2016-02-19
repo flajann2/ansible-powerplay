@@ -3,7 +3,8 @@
 
 # This is a global system configuration
 configuration :system do
-  playbook_directory "playbooks"
+  playbook_directory "examples"
+  inventory "examples/inventory"
 end
 
 # A playbook "shelf" (playbooks) must be explicitely invoked from

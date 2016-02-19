@@ -39,8 +39,8 @@ module Powerplay
       def self.playbooks
         play = Play::clopts[:play].to_sym
         if play == :all
-          DSL::_global[:playbooks].each do |play, group|
-            yield play, group
+          DSL::_global[:playbooks].each do |pplay, group|
+            yield pplay, group
           end
         else
           yield play, DSL::_global[:playbooks][play]
@@ -64,33 +64,38 @@ module Powerplay
           puts "PLAYBOOK #{pname} (group=#{Play::clopts[:group]}) -->"
           groups playbook do |group|
             tg = nil
-            thrgroups << (tg = Thread.new { 
-              puts "    GROUP #{group.type} (book=#{buch}, cg=#{congroups}) -->"
-              thrbooks = []
-              errors = []
-              group.books.zip(Tmux.pane_ptys) do |book, tty|
-                tty ||= Tmux.pane_ptys.last
-                if buch == :all or book.type == buch
-                  puts "        BOOK #{book.type}"
-                  apcmd = %|#{PLAYBOOK} #{OPTS} #{book.config[:playbook_directory].first}/#{book.yaml} --extra-vars "#{book.aparams}" >#{tty}|
-                  thrbooks << Thread.new {
-                    std, status = Open3.capture2e apcmd
-                    errors << [book.yaml, apcmd, std] unless status.success?
-                  } unless dryrun
-                end
-              end
-              thrbooks.each{ |t| t.join }
-              unless errors.empty?
-                errors.each do |yaml, cmd, txt|
-                  puts '=' * 30
-                  puts ('*' * 10) + ' ' + yaml
-                  puts txt
-                  puts '-' * 30
-                  puts cmd
-                end
-                exit 10
-              end
-            })
+            thrgroups << (tg = Thread.new {
+                            puts "    GROUP #{group.type} (book=#{buch}, cg=#{congroups}) -->"
+                            thrbooks = []
+                            errors = []
+                            group.books.zip(Tmux.pane_ptys) do |book, tty|
+                              tty ||= Tmux.pane_ptys.last
+                              if buch == :all or book.type == buch
+                                puts "        BOOK #{book.type}"
+                                inv = if book.config.member? :inventory 
+                                        "-i #{book.config[:inventory].first}" 
+                                      else
+                                        ''
+                                      end
+                                apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} --extra-vars "#{book.aparams}" >#{tty}|
+                                thrbooks << Thread.new {
+                                  std, status = Open3.capture2e apcmd
+                                  errors << [book.yaml, apcmd, std] unless status.success?
+                                } unless dryrun
+                              end
+                            end
+                            thrbooks.each{ |t| t.join }
+                            unless errors.empty?
+                              errors.each do |yaml, cmd, txt|
+                                puts '=' * 30
+                                puts ('*' * 10) + ' ' + yaml
+                                puts txt
+                                puts '-' * 30
+                                puts cmd
+                              end
+                              exit 10
+                            end
+                          })
             # Always wait here unless we're concurrent
             thrgroups.join unless congroups
           end

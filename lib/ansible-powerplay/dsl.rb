@@ -3,6 +3,7 @@ module Powerplay
   module DSL
     @@config_stack = [{}]
     @@global_config = {}
+    SPECIAL_PARAMS = [:playbook_directory, :inventory]
 
     def _bump
       @@config_stack.push @@config_stack.last.clone
@@ -62,9 +63,10 @@ module Powerplay
       end
 
       # Ansible playbook parameters
-      # TODO: there is a bogus playbook_directory param here.
       def aparams
-        config.map{ |k,v| "#{k}=#{v.first}"}.join(' ')
+        config.map{ |k,v|          
+          "#{k}=#{v.first}" unless DSL::SPECIAL_PARAMS.member?(k)
+        }.compact.join(' ')
       end
     end
 
