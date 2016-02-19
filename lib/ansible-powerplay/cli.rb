@@ -23,7 +23,7 @@ module Powerplay
         DSL::_global[:options] = options
         puts "script %s " % [script] if DSL::_global[:options][:verbose] >= 1
         load script, true
-        pp DSL::_global if DSL::_global[:options][:verbose] >= 3
+        pp DSL::_global if DSL::_verbosity >= 3
         Play::Ansible::power_run
       end
       

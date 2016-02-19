@@ -26,6 +26,7 @@ module Powerplay
                       .split(",")
                       .map{ |s| s.strip.sub(/\\n|\"/, '') }
                       .reject{ |pty| pty == %x(tty).chop }
+                      .reject{ |pty| pty == '' }
                   else
                     [Play::DEFOUT]
                   end
@@ -70,6 +71,7 @@ module Powerplay
                             errors = []
                             group.books.zip(Tmux.pane_ptys) do |book, tty|
                               tty ||= Tmux.pane_ptys.last
+                              puts " tty == #{tty} (#{Tmux.pane_ptys.last})" unless DSL::_verbosity < 2
                               if buch == :all or book.type == buch
                                 puts "        BOOK #{book.type}"
                                 inv = if book.config.member? :inventory 

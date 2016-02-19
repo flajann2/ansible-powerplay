@@ -21,6 +21,10 @@ module Powerplay
       @@global_config
     end
 
+    def _verbosity
+      _global[:options][:verbose]
+    end
+
     class Dsl
       attr :config, :type, :desc
 
