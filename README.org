@@ -26,6 +26,8 @@
   #+NAME: Powerplay Example
   [[./examples/powerplay_screenshot.jpeg]]
 
+** Release Notes
+   Please see [[RELEASE_NOTES.org][Release Notes]]
 ** Features and Cavets
 *** Integration with TMUX
     When running multiple Ansible Playbooks concurrently,
@@ -162,6 +164,21 @@
 
    Both the :rabbit and :es_cluster books would be executed
    in parallel.
+*** Running Powerplay
+    If you type 'powerplay' without parameters, you are greeted with:
+    #+BEGIN_SRC doc
+Commands:
+  powerplay help [COMMAND]                                            # Describe available commands or one specific command
+  powerplay play <script> -p, --play=[NAME|all] Which playbook shelf  # Run the powerplay script.
+  powerplay ttys                                                      # list all the TMUX ptys on the current window.
+
+Options:
+  -v, [--verbose=[1|2|3]]
+                           # Default: 0
+    #+END_SRC
+    Please use the help feature to explain the subcommands and options. We 
+    shall be adding many more subcommands and options as our needs demands.
+    If you like to see something here, please submit it as an issue on Github.
 
 *** Example .play Script
     To play around with the example .play script,
@@ -172,7 +189,7 @@
     #+END_SRC
 
     and go to the examples directory to find test.play.
-
+    
 *** Submitting your example .play scripts
     Please feel free to do pull requests of your
     scripts or submit them to me as Gist snippets

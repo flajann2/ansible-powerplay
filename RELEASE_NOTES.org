@@ -1,0 +1,11 @@
+* Ansible Powerplay Release Notes
+
+** v0.0.8 2016-02-20
+   | Feature / Bug                   | Description                                           |
+   |---------------------------------+-------------------------------------------------------|
+   | Creation of these Release Notes | About bloody time                                     |
+   | --tmux                          | Now you can optionally specify the window number      |
+   | --tmux                          | Now checks to ensure it does not dump to its own pane |
+   |                                 |                                                       |
+
+
