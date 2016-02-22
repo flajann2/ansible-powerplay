@@ -9,6 +9,12 @@
 ** Relases
    Newer entries shall be listed first.
 
+
+*** v0.1.1 2016-02-22
+   | Feature / Bug           | Description                       |
+   | --book, --group, --play | Minor bug with the array handling |
+   |                         |                                   |
+
 *** v0.1.0 2016-02-22
    | Feature / Bug           | Description                               |
    |-------------------------+-------------------------------------------|
