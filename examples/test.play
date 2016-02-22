@@ -26,9 +26,14 @@ playbooks :development do
     # Books within a group are executed in parallel,
     # and therefore must be independent of each other.
     book :nat, "nat.yml"
+    book :dat, "nat.yml" # normally you would have different parameters here
+    book :rat, "nat.yml" # normally you would have different parameters here
   end
 
   group :second, "our second group" do
+    book :nat, "nat.yml"
+    book :dat, "nat.yml" # normally you would have different parameters here
+
     book :rabbit, "rabbitmq_cluster.yml" do
       krell_type "t2.medium"
     end

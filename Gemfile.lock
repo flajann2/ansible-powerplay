@@ -6,7 +6,7 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     byebug (8.2.2)
-    coderay (1.1.0)
+    coderay (1.1.1)
     concurrent-ruby (1.0.0)
     debug_inspector (0.0.2)
     descendants_tracker (0.0.4)

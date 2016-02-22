@@ -38,26 +38,22 @@ module Powerplay
       OPTS = ""
 
       def self.playbooks
-        play = Play::clopts[:play].to_sym
-        if play == :all
-          DSL::_global[:playbooks].each do |pplay, group|
-            yield pplay, group
-          end
-        else
-          yield play, DSL::_global[:playbooks][play]
+        plays = Play::clopts[:play].map{ |y| y.to_sym }
+        DSL::_global[:playbooks].each do |pplay, group|
+          yield pplay, group if plays.first == :all or plays.member? pplay
         end
       end
       
       # groups are serial
       def self.groups(playbook)
-        grp = Play::clopts[:group].to_sym
+        grps = Play::clopts[:group].map{ |g| g.to_sym}
         playbook.groups.each do |group|
-          yield group if grp == :all or grp == group.type  
+          yield group if grps.first == :all or grps.member?(group.type)  
         end
       end
 
       def self.power_run
-        buch = Play::clopts[:book].to_sym
+        bucher = Play::clopts[:book].map{ |b| b.to_sym }
         dryrun = Play::clopts[:dryrun]
         congroups = Play::clopts[:congroups]
         playbooks do |pname, playbook|
@@ -66,13 +62,13 @@ module Powerplay
           groups playbook do |group|
             tg = nil
             thrgroups << (tg = Thread.new {
-                            puts "    GROUP #{group.type} (book=#{buch}, cg=#{congroups}) -->"
+                            puts "    GROUP #{group.type} (book=#{bucher}, cg=#{congroups}) -->"
                             thrbooks = []
                             errors = []
                             group.books.zip(Tmux.pane_ptys) do |book, tty|
                               tty ||= Tmux.pane_ptys.last
                               puts " tty == #{tty} (#{Tmux.pane_ptys.last})" unless DSL::_verbosity < 2
-                              if buch == :all or book.type == buch
+                              if bucher.first == :all or bucher.member?(book.type)
                                 puts "        BOOK #{book.type}"
                                 inv = if book.config.member? :inventory 
                                         "-i #{book.config[:inventory].first}" 

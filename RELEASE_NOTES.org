@@ -8,7 +8,13 @@
 
 ** Relases
    Newer entries shall be listed first.
-   
+
+*** v0.1.0 2016-02-22
+   | Feature / Bug           | Description                               |
+   |-------------------------+-------------------------------------------|
+   | --book, --group, --play | Now each can take multiple specifications |
+
+
 *** v0.0.8 2016-02-20
    | Feature / Bug                   | Description                                                                |
    |---------------------------------+----------------------------------------------------------------------------|
@@ -22,12 +28,11 @@
    Bugs and missing features that needs to be addressed. As they are,
    we'll remove them from this list.
 
-   |       Date | Issue                               | Description                                                                                                                                              |
-   |------------+-------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------|
-   | 2016-02-20 | Non tmux output                     | Redirected to stdout, but really needs to go to the current tty.                                                                                         |
-   | 2016-02-20 | --book, --group multiple selections | We need to allow for selecting multiple books and groups to run concurrently.                                                                            |
-   | 2016-02-20 | Platforms other than Linux          | We need to test on Mac OSX and Windows. Should work fine on Macs. I do not plan to support Windows in general, but may accept pull requests to that end. |
-   |            |                                     |                                                                                                                                                          |
+   |       Date | Issue                      | Description                                                                                                                                              |
+   |------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | 2016-02-20 | Non tmux output            | Redirected to stdout, but really needs to go to the current tty.                                                                                         |
+   | 2016-02-20 | Platforms other than Linux | We need to test on Mac OSX and Windows. Should work fine on Macs. I do not plan to support Windows in general, but may accept pull requests to that end. |
+   |            |                            |                                                                                                                                                          |
 ** Wish List
    Well, we can always wish upon a star...
 

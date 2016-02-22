@@ -14,10 +14,10 @@ module Powerplay
         by default. 
       LONGDESC
       option :tmux,      type: :numeric, lazy_default: 0, aliases: '-m', banner: "[WINDOWNUMBERopt] Send output to all tmux panes in the current window, or the numeric window specified."
-      option :play,      type: :string,  aliases: '-p', banner: "[NAME|all] Which playbook shelf", required: true
-      option :group,     type: :string,  aliases: '-g', banner: "[NAME|all] Which group to execute", default: "all"
+      option :play,      type: :array,  aliases: '-p', banner: "[NAME[ NAME2...]|all] Which playbook shelves", required: true
+      option :group,     type: :array,  aliases: '-g', banner: "[NAME[ NAME2...]|all] Which groups to execute", default: "all"
       option :congroups, type: :boolean, aliases: '-c', banner: "Run the groups themselves concurrently"
-      option :book,      type: :string,  aliases: '-b', banner: "[NAME|all] Which book to execute", default: "all"
+      option :book,      type: :array,  aliases: '-b', banner: "[NAME[ NAME2...]|all] Which books to execute", default: "all"
       option :dryrun,    type: :boolean, aliases: '-u', banner: "Dry run, do not actually execute."
       def play(script)
         DSL::_global[:options] = options
