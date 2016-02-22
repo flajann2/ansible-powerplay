@@ -38,6 +38,7 @@
    |------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------|
    | 2016-02-20 | Non tmux output            | Redirected to stdout, but really needs to go to the current tty.                                                                                         |
    | 2016-02-20 | Platforms other than Linux | We need to test on Mac OSX and Windows. Should work fine on Macs. I do not plan to support Windows in general, but may accept pull requests to that end. |
+   | 2016-02-22 | --tmux broken              | It should send output to all the panes, but only sends it to one pane as of 0.1.1                                                                        |
    |            |                            |                                                                                                                                                          |
 ** Wish List
    Well, we can always wish upon a star...
