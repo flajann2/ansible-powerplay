@@ -6,11 +6,7 @@
   number. For "milestone" upgrades and/or compability breaks, we'll rev the
   major number. Of course, you can read all about it here.
 
-** Relases
-   Newer entries shall be listed first.
-
-
-*** v0.1.1 
+** Release Notes
    |       Date | Release | Feature / Bug                   | Description                                                                |
    |------------+---------+---------------------------------+----------------------------------------------------------------------------|
    | 2016-02-23 | v0.1.2  | --tmux. --no-tmux               | Default output now goes to current tty                                     |
@@ -38,5 +34,3 @@
    |------------+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
    | 2016-02-20 | Integration with Jenkins | I have no idea what form this will take                                                                                                                                       |
    | 2016-02-20 | Curses integration       | Basically, the tmux integration is used because it was quick to do. But what I really want to do is full Curses support, similar with what you see with htop and other tools. |
-
-   
