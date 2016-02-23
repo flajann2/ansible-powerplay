@@ -3,13 +3,16 @@ require 'ansible-powerplay'
 
 module Powerplay
   module Play
-    DEFOUT = "&1" # default non-tmux output
-
     def self.clopts
       @cliots ||= DSL::_global[:options]
     end
 
     module Tmux
+
+      def self.current_tty
+        %x[tty].chop
+      end
+
       # Get a list of the ptys
       # Note that this code is a bit innefficient, but will only be
       # executed once in the loop.
@@ -28,7 +31,7 @@ module Powerplay
                       .reject{ |pty| pty == %x(tty).chop }
                       .reject{ |pty| pty == '' }
                   else
-                    [Play::DEFOUT]
+                    [current_tty]
                   end
       end
     end
