@@ -10,25 +10,17 @@
    Newer entries shall be listed first.
 
 
-*** v0.1.1 2016-02-22
-   | Feature / Bug           | Description                       |
-   | --book, --group, --play | Minor bug with the array handling |
-   |                         |                                   |
-
-*** v0.1.0 2016-02-22
-   | Feature / Bug           | Description                               |
-   |-------------------------+-------------------------------------------|
-   | --book, --group, --play | Now each can take multiple specifications |
-
-
-*** v0.0.8 2016-02-20
-   | Feature / Bug                   | Description                                                                |
-   |---------------------------------+----------------------------------------------------------------------------|
-   | Creation of these Release Notes | About bloody time. The prior releases were all mostly bug fixes, and so... |
-   | --tmux                          | Now you can optionally specify the window number                           |
-   | --tmux                          | Now checks to ensure it does not dump to its own pane                      |
-   | --book                          | You can select an individual playbook to run                               |
-   | --group                         | You can select an individual group to run                                  |
+*** v0.1.1 
+   |       Date | Release | Feature / Bug                   | Description                                                                |
+   |------------+---------+---------------------------------+----------------------------------------------------------------------------|
+   | 2016-02-23 | v0.1.2  | --tmux. --no-tmux               | Default output now goes to current tty                                     |
+   | 2016-02-22 | v0.1.1  | --book, --group, --play         | Minor bug with the array handling                                          |
+   | 2016-02-22 | v0.1.0  | --book, --group, --play         | Now each can take multiple specifications                                  |
+   | 2016-02-20 | v0.0.8  | Creation of these Release Notes | About bloody time. The prior releases were all mostly bug fixes, and so... |
+   |            |         | --tmux                          | Now you can optionally specify the window number                           |
+   |            |         | --tmux                          | Now checks to ensure it does not dump to its own pane                      |
+   |            |         | --book                          | You can select an individual playbook to run                               |
+   |            |         | --group                         | You can select an individual group to run                                  |
 
 ** Known Outstanding Issues
    Bugs and missing features that needs to be addressed. As they are,
@@ -38,8 +30,7 @@
    |------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------|
    | 2016-02-20 | Non tmux output            | Redirected to stdout, but really needs to go to the current tty.                                                                                         |
    | 2016-02-20 | Platforms other than Linux | We need to test on Mac OSX and Windows. Should work fine on Macs. I do not plan to support Windows in general, but may accept pull requests to that end. |
-   | 2016-02-22 | --tmux broken              | It should send output to all the panes, but only sends it to one pane as of 0.1.1                                                                        |
-   |            |                            |                                                                                                                                                          |
+
 ** Wish List
    Well, we can always wish upon a star...
 
@@ -47,5 +38,5 @@
    |------------+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
    | 2016-02-20 | Integration with Jenkins | I have no idea what form this will take                                                                                                                                       |
    | 2016-02-20 | Curses integration       | Basically, the tmux integration is used because it was quick to do. But what I really want to do is full Curses support, similar with what you see with htop and other tools. |
-   |            |                          |                                                                                                                                                                               |
+
    
