@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 require 'ansible-powerplay'
 
+CRITICAL = Mutex.new
+
 module Powerplay
   module Play
     def self.clopts
@@ -16,7 +18,7 @@ module Powerplay
       # Get a list of the ptys
       # Note that this code is a bit innefficient, but will only be
       # executed once in the loop.
-      def self.pane_ptys
+      def self.pane_ttys
         @window = if Play::clopts.nil? or Play::clopts[:tmux] == 0
                     ''
                   else
@@ -33,6 +35,17 @@ module Powerplay
                   else
                     [current_tty]
                   end
+      end
+      
+      # thread-safe way to grab a new tty
+      def self.grab_a_tty
+        tty = nil
+        CRITICAL.synchronize {
+          @@tty_count ||= -1
+          @@tty_count = (@@tty_count+1) % pane_ttys.size
+          tty = pane_ttys[@@tty_count] 
+        }
+        tty
       end
     end
 
@@ -68,9 +81,9 @@ module Powerplay
                             puts "    GROUP #{group.type} (book=#{bucher}, cg=#{congroups}) -->"
                             thrbooks = []
                             errors = []
-                            group.books.zip(Tmux.pane_ptys) do |book, tty|
-                              tty ||= Tmux.pane_ptys.last
-                              puts " tty == #{tty} (#{Tmux.pane_ptys.last})" unless DSL::_verbosity < 2
+                            group.books.each do | book |
+                              tty ||= Tmux.grab_a_tty
+                              puts " tty == #{tty} (#{Tmux.pane_ttys.last})" unless DSL::_verbosity < 2
                               if bucher.first == :all or bucher.member?(book.type)
                                 puts "        BOOK #{book.type}"
                                 inv = if book.config.member? :inventory 

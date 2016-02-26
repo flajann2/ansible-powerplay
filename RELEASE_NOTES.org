@@ -9,6 +9,7 @@
 ** Release Notes
    | Release | Feature / Bug                   | Description                                                                |       Date |
    |---------+---------------------------------+----------------------------------------------------------------------------+------------|
+   | v0.1.3  | --tmux                          | Better handling at distributing the panes.                                 | 2016-02-26 |
    | v0.1.2  | --tmux. --no-tmux               | Default output now goes to current tty                                     | 2016-02-23 |
    | v0.1.1  | --book, --group, --play         | Minor bug with the array handling                                          | 2016-02-22 |
    | v0.1.0  | --book, --group, --play         | Now each can take multiple specifications                                  | 2016-02-22 |
