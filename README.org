@@ -164,6 +164,29 @@
 
    Both the :rabbit and :es_cluster books would be executed
    in parallel.
+
+*** Dividing up your specs in other PowerPlay files
+    Ruby, the underlying language, give you a lot of
+    things for "free", like allowing you to load other powerplay files,
+    for example:
+
+    #+BEGIN_SRC ruby
+    load 'production.play'
+    #+END_SRC
+
+    We mention this here for those who may not be familiar with Ruby,
+    but may wish to section off your specifications thusly.
+
+    You don't really need to know any Ruby, but it could increase 
+    the span of what you might want to do. To get a quick taste,
+    please checkout [[https://www.ruby-lang.org/en/documentation/quickstart/][Ruby in 20 Minutes]].
+
+    It is also possible to leverage Ruby's metaprogramming techniques to
+    create templates for your specificaitons, but at some point, as time
+    allows, I may directly support this in the DSL. Please let your
+    wishes be known to me for this and any other feature you might want to 
+    see.
+
 *** Running Powerplay
     If you type 'powerplay' without parameters, you are greeted with:
     #+BEGIN_SRC doc

@@ -1,20 +1,11 @@
 # -*- coding: utf-8 -*-
-# Test script for the Powerplay DSL
+# Example of loading a powerplay into another powerplay.
 
-# This is a global system configuration
-configuration :system do
-  playbook_directory "examples"
-  inventory "examples/inventory"
-end
-
-# A playbook "shelf" (playbooks) must be explicitely invoked from
-# command line by default. Playbooks will execute
-# in parallel unless otherwise specified.
-playbooks :development do
+playbooks :production do
 
   # sṕecific configuration for :development
   configuration do 
-    stack :development
+    stack :production
     krell_type "t2.small"
     servers 1
     rolling 3
@@ -48,7 +39,3 @@ playbooks :development do
     end
   end
 end
-
-# You can also 'load' other powerplay files, allowing you
-# to divide up your specifications.
-load 'test2.play'

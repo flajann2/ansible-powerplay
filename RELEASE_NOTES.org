@@ -31,7 +31,9 @@
 ** Wish List
    Well, we can always wish upon a star...
 
-   |       Date | Wish                     | Description                                                                                                                                                                   |
-   |------------+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-   | 2016-02-20 | Integration with Jenkins | I have no idea what form this will take                                                                                                                                       |
-   | 2016-02-20 | Curses integration       | Basically, the tmux integration is used because it was quick to do. But what I really want to do is full Curses support, similar with what you see with htop and other tools. |
+   |       Date | Wish                      | Description                                                                                                                                                                   |
+   |------------+---------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | 2016-02-20 | Integration with Jenkins  | I have no idea what form this will take                                                                                                                                       |
+   | 2016-02-20 | Curses integration        | Basically, the tmux integration is used because it was quick to do. But what I really want to do is full Curses support, similar with what you see with htop and other tools. |
+   | 2016-02-26 | Better and Error handling | When there's a failure in the underlying Ansible playbook, we want to handle that better in Powerplay. This would be a part of the Curses upgrade to come later.              |
+   |            |                           |                                                                                                                                                                               |
