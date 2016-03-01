@@ -6,7 +6,7 @@ CRITICAL = Mutex.new
 module Powerplay
   module Play
     def self.clopts
-      @cliots ||= DSL::_global[:options]
+      @clopts ||= Thor::CoreExt::HashWithIndifferentAccess.new DSL::_global[:options]
     end
 
     module Tmux
@@ -68,52 +68,56 @@ module Powerplay
         end
       end
 
+      def self.run_book(book, bucher, book_threads, errors)
+        dryrun = Play::clopts[:dryrun]
+        extra = Play::clopts[:extra]
+        tty ||= Tmux.grab_a_tty
+        puts " tty == #{tty} (#{Tmux.pane_ttys.last})" unless DSL::_verbosity < 2
+        if bucher.first == :all or bucher.member?(book.type)
+          puts "        BOOK #{book.type}"
+          inv = if book.config.member? :inventory 
+                  "-i #{book.config[:inventory].first}" 
+                else
+                  ''
+                end
+          xxv = [extra[book.type], extra[:all]].compact.join(' ')
+          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} --extra-vars "#{book.aparams} #{xxv}" >#{tty}|
+          book_threads << Thread.new {
+            std, status = Open3.capture2e apcmd
+            errors << [book.yaml, apcmd, std] unless status.success?
+          } unless dryrun
+        end
+      end
+
       def self.power_run
         bucher = Play::clopts[:book].map{ |b| b.to_sym }
-        dryrun = Play::clopts[:dryrun]
         congroups = Play::clopts[:congroups]
         playbooks do |pname, playbook|
-          thrgroups = []
+          group_threads = []
           puts "PLAYBOOK #{pname} (group=#{Play::clopts[:group]}) -->"
           groups playbook do |group|
             tg = nil
-            thrgroups << (tg = Thread.new {
-                            puts "    GROUP #{group.type} (book=#{bucher}, cg=#{congroups}) -->"
-                            thrbooks = []
-                            errors = []
-                            group.books.each do | book |
-                              tty ||= Tmux.grab_a_tty
-                              puts " tty == #{tty} (#{Tmux.pane_ttys.last})" unless DSL::_verbosity < 2
-                              if bucher.first == :all or bucher.member?(book.type)
-                                puts "        BOOK #{book.type}"
-                                inv = if book.config.member? :inventory 
-                                        "-i #{book.config[:inventory].first}" 
-                                      else
-                                        ''
-                                      end
-                                apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} --extra-vars "#{book.aparams}" >#{tty}|
-                                thrbooks << Thread.new {
-                                  std, status = Open3.capture2e apcmd
-                                  errors << [book.yaml, apcmd, std] unless status.success?
-                                } unless dryrun
-                              end
-                            end
-                            thrbooks.each{ |t| t.join }
-                            unless errors.empty?
-                              errors.each do |yaml, cmd, txt|
-                                puts '=' * 30
-                                puts ('*' * 10) + ' ' + yaml
-                                puts txt
-                                puts '-' * 30
-                                puts cmd
-                              end
-                              exit 10
-                            end
-                          })
+            group_threads << (tg = Thread.new {
+                                puts "    GROUP #{group.type} (book=#{bucher}, cg=#{congroups}) -->"
+                                book_threads = []
+                                errors = []
+                                group.books.each { |book| run_book(book, bucher, book_threads, errors) }
+                                book_threads.each{ |t| t.join }
+                                unless errors.empty?
+                                  errors.each do |yaml, cmd, txt|
+                                    puts '=' * 30
+                                    puts ('*' * 10) + ' ' + yaml
+                                    puts txt
+                                    puts '-' * 30
+                                    puts cmd
+                                  end
+                                  exit 10
+                                end
+                              })
             # Always wait here unless we're concurrent
-            thrgroups.join unless congroups
+            group_threads.join unless congroups
           end
-          thrgroups.each{ |t| t.join }
+          group_threads.each{ |t| t.join }
         end
       end
     end

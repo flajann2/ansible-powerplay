@@ -46,7 +46,7 @@ module Powerplay
       no_commands do
         def massage(options)
           opt = Thor::CoreExt::HashWithIndifferentAccess.new options
-          opt[:extra] = opt[:extra].map{ |s| s.split(':', 2)}.to_h
+          opt[:extra] = Thor::CoreExt::HashWithIndifferentAccess.new opt[:extra].map{ |s| s.split(':', 2)}.to_h
           opt
         end
       end
