@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'ansible-powerplay'
 
 include Powerplay::DSL
@@ -19,7 +20,7 @@ module Powerplay
       option :tmux,      type: :numeric, aliases: '-m', banner: "[WINDOWNUMBERopt]", lazy_default: 0,
                                                         desc: ' Send output to all tmux panes in the current window, or the numeric window specified.'
       option :play,      type: :array,   aliases: ['-p', '--play', '--power'], banner: "[NAME[ NAME2...]|all]", required: true,
-                                                        desc: 'Which powerplays to specifically execute.'
+                                                        desc: 'Which PowerPlay playbooks (as opposed to Ansible playbooks) to specifically execute.'
       option :group,     type: :array,   aliases: '-g', banner: "[NAME[ NAME2...]|all]", default: [:all],
                                                         desc: ' Which groups to execute.'
       option :congroups, type: :boolean, aliases: '-c', desc: "Run the groups themselves concurrently"
@@ -27,10 +28,10 @@ module Powerplay
                                                         desc: 'Which books to execute.'
       option :dryrun,    type: :boolean, aliases: '-u', desc: "Dry run, do not actually execute."
       option :extra,     type: :array,   aliases: ['-x', '--extra-vars'],
-                                                        banner: %(<BOOKNAME|all>:"key1a=value1a key2a=value2a... " [BOOKNAME2:"key1b=value1b key2b=value2b... "]),
-                                                        desc: 'Pass custom parameters directly to playbooks'
+                                                        banner: %(<BOOKNAME|all>:"key1a=value1a key2a=value2a... " [BOOKNAME2:"key1b=value1b key2b=value2b... "]), default: [],
+                                                        desc: 'Pass custom parameters directly to playbooks. You may either pass parameters to all playbooks or specific ones.'
       def play(script = 'stack.play')
-        DSL::_global[:options] = options
+        DSL::_global[:options] = massage options
         puts "script %s " % [script] if DSL::_global[:options][:verbose] >= 1
         load script, true
         pp DSL::_global if DSL::_verbosity >= 3
@@ -40,6 +41,14 @@ module Powerplay
       desc 'ttys', 'list all the TMUX ptys on the current window.'
       def ttys
         puts Play::Tmux::pane_ptys
+      end
+
+      no_commands do
+        def massage(options)
+          opt = Thor::CoreExt::HashWithIndifferentAccess.new options
+          opt[:extra] = opt[:extra].map{ |s| s.split(':', 2)}.to_h
+          opt
+        end
       end
     end
   end
