@@ -1,0 +1,54 @@
+# -*- coding: utf-8 -*-
+# Test script for the Powerplay DSL
+
+# This is a global system configuration
+configuration :system do
+  playbook_directory "examples"
+  inventory "examples/inventory"
+end
+
+# A playbook "shelf" (playbooks) must be explicitely invoked from
+# command line by default. Playbooks will execute
+# in parallel unless otherwise specified.
+playbooks :development do
+
+  # sṕecific configuration for :development
+  configuration do 
+    stack :development
+    krell_type "t2.small"
+    servers 1
+    rolling 3
+    krell_disk_size 20
+  end
+
+  # Groups are executed serially.
+  group :first, "our very first group" do
+    # Books within a group are executed in parallel,
+    # and therefore must be independent of each other.
+    book :nat, "nat.yml"
+    book :dat, "nat.yml" # normally you would have different parameters here
+    book :rat, "nat.yml" # normally you would have different parameters here
+  end
+
+  group :second, "our second group" do
+    book :nat, "nat.yml"
+    book :dat, "nat.yml" # normally you would have different parameters here
+
+    book :rabbit, "rabbitmq_cluster.yml" do
+      krell_type "t2.medium"
+    end
+
+    book :es_cluster, "elasticsearch_cluster.yml" do
+      esver "1.7.4"
+      cluster_name :es
+      servers 3
+      heapsize "2g"
+      krell_type "t2.medium"
+      krell_disk_size 200
+    end
+  end
+end
+
+# You can also 'load' other powerplay files, allowing you
+# to divide up your specifications.
+load 'test2.play'

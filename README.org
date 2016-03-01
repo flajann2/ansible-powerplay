@@ -84,7 +84,7 @@
 
 ** Use
    Basically, cd to the root of your Ansible directory,
-   and a .play file (see the example at: [[https://github.com/flajann2/ansible-powerplay/blob/master/examples/test.play][test.play]].
+   and a .play file (see the example at: [[https://github.com/flajann2/ansible-powerplay/blob/master/examples/stack.play][stack.play]].)
 
    You can place a config clause either globally,
    inside of playbooks, inside of groups, and the
@@ -202,6 +202,31 @@ Options:
     Please use the help feature to explain the subcommands and options. We 
     shall be adding many more subcommands and options as our needs demands.
     If you like to see something here, please submit it as an issue on Github.
+
+    And for an example of play help, (note that this may not be up-to-date, so
+    please run 'powerplay help play' on your installe version!)
+    #+BEGIN_SRC doc
+powerplay help play
+Usage:
+  powerplay play [script] -p, --play, --power, --play=[NAME[ NAME2...]|all]
+
+Options:
+  -m, [--tmux=[WINDOWNUMBERopt]]                                                                                              #  Send output to all tmux panes in the current window, or the numeric window specified.
+  -p, --play, --power, --play=[NAME[ NAME2...]|all]                                                                           # Which PowerPlay playbooks (as opposed to Ansible playbooks) to specifically execute.
+  -g, [--group=[NAME[ NAME2...]|all]]                                                                                         #  Which groups to execute.
+                                                                                                                              # Default: [:all]
+  -c, [--congroups], [--no-congroups]                                                                                         # Run the groups themselves concurrently
+  -b, [--book=[NAME[ NAME2...]|all]]                                                                                          # Which books to execute.
+                                                                                                                              # Default: [:all]
+  -u, [--dryrun], [--no-dryrun]                                                                                               # Dry run, do not actually execute.
+  -x, --extra-vars, [--extra=<BOOKNAME|all>:"key1a=value1a key2a=value2a... " [BOOKNAME2:"key1b=value1b key2b=value2b... "]]  # Pass custom parameters directly to playbooks. You may either pass parameters to all playbooks or specific ones.
+  -v, [--verbose=[1|2|3]]
+                                                                                                                              # Default: 0
+
+Description:
+  Plays a PowerPlay script. The entries in the script, as specified inside of a group, are run in parallel by default.
+    #+END_SRC
+
 
 *** Example .play Script
     To play around with the example .play script,
