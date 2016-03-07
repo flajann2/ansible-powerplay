@@ -71,6 +71,15 @@ module Powerplay
       def self.run_book(book, bucher, book_threads, errors)
         dryrun = Play::clopts[:dryrun]
         extra = Play::clopts[:extra]
+        tags = Play::clopts[:tags]
+        sktags = Play::clopts[:sktags]
+        tagstr = ''
+        if tags and sktags
+          puts "Cannot use both --tags (#{tags}) and --skip-tags (#{sktags})"
+          exit 5 
+        end
+        tagstr += %( --tags "#{tags}" ) unless tags.nil?
+        tagstr += %( --skip-tags "#{sktags}" ) unless sktags.nil?
         tty ||= Tmux.grab_a_tty
         puts " tty == #{tty} (#{Tmux.pane_ttys.last})" unless DSL::_verbosity < 2
         if bucher.first == :all or bucher.member?(book.type)
@@ -81,7 +90,7 @@ module Powerplay
                   ''
                 end
           xxv = [extra[book.type], extra[:all]].compact.join(' ')
-          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} --extra-vars "#{book.aparams} #{xxv}" >#{tty}|
+          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars "#{book.aparams} #{xxv}" >#{tty}|
           book_threads << Thread.new {
             std, status = Open3.capture2e apcmd
             errors << [book.yaml, apcmd, std] unless status.success?

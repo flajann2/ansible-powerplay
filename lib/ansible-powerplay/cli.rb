@@ -19,7 +19,7 @@ module Powerplay
       LONGDESC
       option :tmux,      type: :numeric, aliases: '-m', banner: "[WINDOWNUMBERopt]", lazy_default: 0,
                                                         desc: ' Send output to all tmux panes in the current window, or the numeric window specified.'
-      option :play,      type: :array,   aliases: ['-p', '--play', '--power'], banner: "[NAME[ NAME2...]|all]", required: true,
+      option :play,      type: :array,   aliases: ['-p', '--power'], banner: "[NAME[ NAME2...]|all]", required: true,
                                                         desc: 'Which PowerPlay playbooks (as opposed to Ansible playbooks) to specifically execute.'
       option :group,     type: :array,   aliases: '-g', banner: "[NAME[ NAME2...]|all]", default: [:all],
                                                         desc: ' Which groups to execute.'
@@ -30,6 +30,12 @@ module Powerplay
       option :extra,     type: :array,   aliases: ['-x', '--extra-vars'],
                                                         banner: %(<BOOKNAME|all>:"key1a=value1a key2a=value2a... " [BOOKNAME2:"key1b=value1b key2b=value2b... "]), default: [],
                                                         desc: 'Pass custom parameters directly to playbooks. You may either pass parameters to all playbooks or specific ones.'
+      option :tags,      type: :array,   aliases: '-t',
+                                                        banner: %(<TAG1>[ TAG2 TAG3...]), 
+                                                        desc: "Ansible tags to only run - mutually exclusive with --skip-tags"
+      option :sktags,    type: :array,   aliases: ['--skip-tags', '-T'],
+                                                        banner: %(<TAG1>[ TAG2 TAG3...]), 
+                                                        desc: "Ansible tags to skip - mutually exclusive with --tags"
       def play(script = 'stack.play')
         DSL::_global[:options] = massage options
         puts "script %s " % [script] if DSL::_global[:options][:verbose] >= 1
@@ -47,6 +53,8 @@ module Powerplay
         def massage(options)
           opt = Thor::CoreExt::HashWithIndifferentAccess.new options
           opt[:extra] = Thor::CoreExt::HashWithIndifferentAccess.new opt[:extra].map{ |s| s.split(':', 2)}.to_h
+          opt[:tags] = opt[:tags].join(',') unless opt[:tags].nil?
+          opt[:sktags] = opt[:sktags].join(',') unless opt[:sktags].nil?
           opt
         end
       end
