@@ -21,8 +21,12 @@ playbooks :development do
     krell_disk_size 20
   end
 
-  # Groups are executed serially.
-  group :first, "our very first group" do
+  # These are 'naked# books, which shall be grouped
+  book :first, "first.yml"
+  book :second, "first.yml"
+
+  # Groups are executed serially (synchronously) by default.
+  group :first, "our very first synchronous group" do
     # Books within a group are executed in parallel,
     # and therefore must be independent of each other.
     book :nat, "nat.yml"
@@ -30,12 +34,24 @@ playbooks :development do
     book :rat, "nat.yml" # normally you would have different parameters here
   end
 
-  group :second, "our second group" do
+  group :second, "our second group", :async do
     book :nat, "nat.yml"
     book :dat, "nat.yml" # normally you would have different parameters here
 
     book :rabbit, "rabbitmq_cluster.yml" do
       krell_type "t2.medium"
+    end
+
+    group :nested, "nested group", :async do
+      
+      group :deepnest1, "deeply nested group", :async do
+      end
+
+      group :deepnest2, "deeply nested group 2", :async do
+      end
+
+      group :deepnest3, "deeply nested group 3", :sync do
+      end
     end
 
     book :es_cluster, "elasticsearch_cluster.yml" do
