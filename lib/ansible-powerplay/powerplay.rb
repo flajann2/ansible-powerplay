@@ -60,7 +60,6 @@ module Powerplay
         end
       end
       
-      # groups are serial
       def self.groups(playbook)
         grps = Play::clopts[:group].map{ |g| g.to_sym}
         playbook.groups.each do |group|

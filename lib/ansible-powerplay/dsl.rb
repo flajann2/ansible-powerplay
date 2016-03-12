@@ -75,17 +75,25 @@ module Powerplay
     end
 
     class DslGroup < Dsl
-      attr :books
+      # The entries here may either be books or groups.
+      attr :books 
+      attr_reader :exec
 
       def book(type, yaml, desc=nil, &block)
         @books ||= []
         books << DslBook.new(type, yaml, desc, &block)
       end
 
-      def initialize(type, desc, &block)
-        super
+      def group name, desc = nil, execution = :sync, &block
+        @books ||= []
+        books << DslGroup.new(name, desc, execution, &block)
+      end
+
+      def initialize(type, desc, execution, &block)
+        super(type, desc, &block)
+        @exec = execution
         _bump
-        instance_eval &block
+        instance_eval &block 
         @config = _dip
       end
     end
@@ -93,15 +101,15 @@ module Powerplay
     class DslPlaybook < Dsl
       attr :groups
 
-      def group name, desc=nil, &block
+      def group name, desc = nil, execution = :sync, &block
         @groups ||= []
-        groups << DslGroup.new(name, desc, &block)
+        groups << DslGroup.new(name, desc, execution, &block)
       end
 
       def initialize (type, desc, &block)
         super
         _bump
-        instance_eval( &block )
+        instance_eval &block
         @config = _dip
       end
     end
