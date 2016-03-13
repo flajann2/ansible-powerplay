@@ -243,6 +243,57 @@ Description:
     scripts or submit them to me as Gist snippets
     and I will include them if they are good.
 
+** Concurrency
+   We offer a finely controllable concurency model
+   in the DSL with groups. The short of it is that
+   a group may be marked as :sync or :async. All
+   contents of a :sync group shall be executed serially.
+   All contents of an :async group shall be executed
+   concurrently.
+
+   As you can now nest groups, and that each
+   group is either synchronous or asynchronous, how
+   these interact requires a bit of understanding
+   as to how the sync and async job queing mechanism
+   in PowerPlay actually works.
+
+*** The Gory Details behind how :sync and :async
+    Internally, we have two job queues, sync_jobs
+    and async_jobs. We also have -- at least conceptually
+    -- two run queues, sync_runs and async_runs,
+    to reflect queues of currenly running jobs, or books.
+    A "job" or a "book" represent an actual Ansible Playbook 
+    being run, or waiting to be run.
+    
+    | enqueue    | deque and run 'queues' |
+    |------------+------------------------|
+    | sync_jobs  | sync_runs              |
+    | async_jobs | async_runs             |
+
+    As well, we have the following queuing rules. Please note
+    that "iff" is the mathematical "iff", meaning "if and only if".
+
+    | rule            | details     | behavior                                             |
+    |-----------------+-------------+------------------------------------------------------|
+    | enqueue         | async job   | iff sync_jobs is empty and all sync_runs completed   |
+    |                 | sync job    | iff async_jobs is empty and all async_runs completed |
+    | dequeue and run | async queue | grab everything and run it concurrently              |
+    |                 | sync queue  | grab one at a time and run it until it completes     |
+
+    Note that "dequeue and run" flips back and forth between working on the sync and async 
+    queues. Never both simultaneously.
+
+**** Nested Groups
+     You can appreicate that understanding the behavior and "interaction" of
+     nested queues can get pretty hairy, but just keep in mind the rules above,
+     as your nesting will rigorously adhere to the logic above, even as it 
+     descends into the queues. The group designation only directly affects
+     its immediate jobs, or books. It does not directly affect the books
+     in its nested children.
+
+**** TODO Scenarios
+
+
 ** Contributing to ansible-powerplay
    Your parcipitation is welcome, and I will respond to your
    pull requests in a timely fashion as long as I am not
