@@ -23,7 +23,7 @@ module Powerplay
                                                         desc: 'Which PowerPlay playbooks (as opposed to Ansible playbooks) to specifically execute.'
       option :group,     type: :array,   aliases: '-g', banner: "[NAME[ NAME2...]|all]", default: [:all],
                                                         desc: ' Which groups to execute.'
-      option :congroups, type: :boolean, aliases: '-c', desc: "Run the groups themselves concurrently"
+      option :congroups, type: :boolean, aliases: '-c', desc: "[deprecated] Run the groups themselves concurrently. This option is deprecated and will be removed shortly. Use :sync or :async on your group directives instead. See docs."
       option :book,      type: :array,   aliases: '-b', banner: "[NAME[ NAME2...]|all]", default: [:all],
                                                         desc: 'Which books to execute.'
       option :dryrun,    type: :boolean, aliases: '-u', desc: "Dry run, do not actually execute."
