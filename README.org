@@ -293,7 +293,6 @@ Description:
 
 **** TODO Scenarios
 
-
 ** Contributing to ansible-powerplay
    Your parcipitation is welcome, and I will respond to your
    pull requests in a timely fashion as long as I am not
