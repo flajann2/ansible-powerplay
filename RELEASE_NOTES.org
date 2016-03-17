@@ -9,6 +9,7 @@
 ** Release Notes
    | Release | Feature / Bug                    | Description                                                                        |       Date |
    |---------+----------------------------------+------------------------------------------------------------------------------------+------------|
+   | v0.2.3  | --verbose                        | Will display Ansible commands on a --verbosity=1 or higher.                        | 2016-03-17 |
    | v0.2.2  | --tags, --skip-tags              | Ansible tag support                                                                | 2016-03-07 |
    | v0.2.1  | --extra-vars                     | A way of passing extra vars to the Ansible playbooks. Please see the documentation | 2016-03-01 |
    | v0.2.0  | powerplay play (behavior change) | If script is not given, now defaults to 'stack.play' in the current directory.     | 2016-02-29 |

@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem 'thor', '~> 0'
 gem 'concurrent-ruby', require: 'concurrent'
 gem 'term-ansicolor'
+gem 'colorize', "~> 0"
 
 group :development do
   gem "rspec",          "~> 2"

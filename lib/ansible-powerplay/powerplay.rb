@@ -91,6 +91,11 @@ module Powerplay
                 end
           xxv = [extra[book.type], extra[:all]].compact.join(' ')
           apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars "#{book.aparams} #{xxv}" >#{tty}|
+          unless DSL::_verbosity < 1
+            puts "==============================\nRunning command:"
+            puts "#{apcmd}".yellow
+            puts "------------------------------" 
+          end
           book_threads << Thread.new {
             std, status = Open3.capture2e apcmd
             errors << [book.yaml, apcmd, std] unless status.success?
