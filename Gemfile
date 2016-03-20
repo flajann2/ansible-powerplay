@@ -3,6 +3,8 @@ source "https://rubygems.org"
 gem 'thor', '~> 0'
 gem 'concurrent-ruby', require: 'concurrent'
 gem 'term-ansicolor'
+gem 'colorize', "~> 0"
+gem 'semver', '~> 1'
 
 group :development do
   gem "rspec",          "~> 2"
@@ -11,7 +13,6 @@ group :development do
   gem "bundler",        "~> 1"
   gem "juwelier",       "~> 2"
   gem "simplecov",      ">= 0"
-  gem 'semver',         '~> 1'
   gem 'guard', '~> 2'
   gem 'guard-rspec',    '~> 1'
 
