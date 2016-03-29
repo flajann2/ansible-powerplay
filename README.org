@@ -1,5 +1,8 @@
 * Ansible Powerplay
 
+  #+ATTR_HTML: title="Join the chat at https://gitter.im/flajann2/ansible-powerplay"
+  [[https://gitter.im/flajann2/ansible-powerplay?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge][file:https://badges.gitter.im/flajann2/ansible-powerplay.svg]]
+
   Powerplay allows you to run multiple Ansible playbooks in
   parallel. Depending on how you organize your playbooks,
   this can be a solid win. I basically before this had been
