@@ -56,7 +56,7 @@ playbooks :development do
       end
     end
 
-    book :es_cluster, "elasticsearch_cluster.yml" do
+    book :es, "elasticsearch.yml" do
       esver "1.7.4"
       cluster_name :es
       servers 3
