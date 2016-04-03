@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.4.0)
+    aquarium (0.5.1)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
@@ -41,7 +42,7 @@ GEM
     highline (1.7.8)
     interception (0.5)
     json (1.8.3)
-    juwelier (2.1.0)
+    juwelier (2.1.1)
       builder
       bundler (>= 1.0)
       git (>= 1.2.5)
@@ -50,6 +51,7 @@ GEM
       nokogiri (>= 1.5.10)
       rake
       rdoc
+      semver
     jwt (1.5.1)
     listen (3.0.6)
       rb-fsevent (>= 0.9.3)
@@ -91,8 +93,11 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
+    queue_ding (0.1.2)
+      aquarium (~> 0)
+      semver (~> 1)
     rack (1.6.4)
-    rake (11.1.1)
+    rake (11.1.2)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
@@ -137,6 +142,7 @@ DEPENDENCIES
   pry-remote (~> 0)
   pry-rescue (~> 1)
   pry-stack_explorer (~> 0)
+  queue_ding (~> 0)
   rdoc (~> 3)
   rspec (~> 2)
   semver (~> 1)

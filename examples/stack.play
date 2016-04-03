@@ -2,9 +2,11 @@
 # Test script for the Powerplay DSL
 
 # This is a global system configuration
+# It assumes your current directory is the
+# 'examples' directory.
 configuration :system do
-  playbook_directory "examples"
-  inventory "examples/inventory"
+  playbook_directory "playbooks"
+  inventory "inventory"
 end
 
 # A playbook "shelf" (playbooks) must be explicitely invoked from
@@ -30,8 +32,8 @@ playbooks :development do
     # Books within a group are executed in parallel,
     # and therefore must be independent of each other.
     book :nat, "nat.yml"
-    book :dat, "nat.yml" # normally you would have different parameters here
-    book :rat, "nat.yml" # normally you would have different parameters here
+    book :dat, "dat.yml"
+    book :rat, "rat.yml"
   end
 
   group :second, "our second group", :async do

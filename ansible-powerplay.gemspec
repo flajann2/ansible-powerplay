@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Fred Mitchell"]
-  s.date = "2016-03-25"
+  s.date = "2016-04-03"
   s.description = "Ansible Powerplay, by way of its DSL, allows you to\n                       specify your Ansible playbooks and their vars, and common\n                       vars to all, so that you can run your\n                       indeoendent playbooks in full parallel."
   s.email = "fred.mitchell@gmx.de"
   s.executables = ["powerplay"]
@@ -55,6 +55,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 0"])
       s.add_runtime_dependency(%q<colorize>, ["~> 0"])
       s.add_runtime_dependency(%q<semver>, ["~> 1"])
+      s.add_runtime_dependency(%q<queue_ding>, ["~> 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2"])
       s.add_development_dependency(%q<yard>, ["~> 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3"])
@@ -75,6 +76,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<term-ansicolor>, [">= 0"])
       s.add_dependency(%q<colorize>, ["~> 0"])
       s.add_dependency(%q<semver>, ["~> 1"])
+      s.add_dependency(%q<queue_ding>, ["~> 0"])
       s.add_dependency(%q<rspec>, ["~> 2"])
       s.add_dependency(%q<yard>, ["~> 0"])
       s.add_dependency(%q<rdoc>, ["~> 3"])
@@ -96,6 +98,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<term-ansicolor>, [">= 0"])
     s.add_dependency(%q<colorize>, ["~> 0"])
     s.add_dependency(%q<semver>, ["~> 1"])
+    s.add_dependency(%q<queue_ding>, ["~> 0"])
     s.add_dependency(%q<rspec>, ["~> 2"])
     s.add_dependency(%q<yard>, ["~> 0"])
     s.add_dependency(%q<rdoc>, ["~> 3"])
