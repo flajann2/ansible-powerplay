@@ -17,19 +17,19 @@ playbooks :production do
     # Books within a group are executed in parallel,
     # and therefore must be independent of each other.
     book :nat, "nat.yml"
-    book :dat, "nat.yml" # normally you would have different parameters here
-    book :rat, "nat.yml" # normally you would have different parameters here
+    book :dat, "dat.yml"
+    book :rat, "rat.yml"
   end
 
   group :second, "our second group" do
     book :nat, "nat.yml"
-    book :dat, "nat.yml" # normally you would have different parameters here
+    book :dat, "dat.yml"
 
-    book :rabbit, "rabbitmq_cluster.yml" do
+    book :rabbit, "rabbitmq.yml" do
       krell_type "t2.medium"
     end
 
-    book :es_cluster, "elasticsearch_cluster.yml" do
+    book :es, "elasticsearch.yml" do
       esver "1.7.4"
       cluster_name :es
       servers 3
