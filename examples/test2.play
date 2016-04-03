@@ -6,10 +6,10 @@ playbooks :production do
   # sṕecific configuration for :development
   configuration do 
     stack :production
-    krell_type "t2.small"
+    krell_type "m4.medium"
     servers 1
     rolling 3
-    krell_disk_size 20
+    krell_disk_size 200
   end
 
   # Groups are executed serially.

@@ -38,21 +38,41 @@ playbooks :development do
 
   group :second, "our second group", :async do
     book :nat, "nat.yml"
-    book :dat, "nat.yml" # normally you would have different parameters here
+    book :dat, "dat.yml"
 
     book :rabbit, "rabbitmq_cluster.yml" do
       krell_type "t2.medium"
     end
 
     group :nested, "nested group", :async do
+      configuration do 
+        krell_type "c4.large"
+        servers 2
+      end
       
       group :deepnest1, "deeply nested group", :async do
+        configuration do 
+          krell_type "c4.tiny"
+          servers 2
+        end
+
+        book :nat, "nat.yml"
+        book :dat, "dat.yml"
       end
 
       group :deepnest2, "deeply nested group 2", :async do
+       configuration do 
+          krell_type "c4.small"
+          servers 3
+        end
+
+        book :nat, "nat.yml"
+        book :dat, "dat.yml"
       end
 
       group :deepnest3, "deeply nested group 3", :sync do
+        book :nat, "nat.yml"
+        book :dat, "dat.yml"
       end
     end
 
