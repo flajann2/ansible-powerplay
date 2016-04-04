@@ -10,3 +10,6 @@
     - name: test fact and passed in variables
       debug:
         msg: "elasticsearch test {{nat}} stack {{stack}} AWS instance type {{krell_type}} AWS disk size {{krell_disk_size}}"
+    - name: wait 5 seconds
+      pause:
+        seconds: 5
