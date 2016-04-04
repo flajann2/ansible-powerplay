@@ -3,25 +3,29 @@
   #+ATTR_HTML: title="Join the chat at https://gitter.im/flajann2/ansible-powerplay"
   [[https://gitter.im/flajann2/ansible-powerplay?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge][file:https://badges.gitter.im/flajann2/ansible-powerplay.svg]]
 
-  Powerplay allows you to run multiple Ansible playbooks in
-  parallel. Depending on how you organize your playbooks,
-  this can be a solid win. I basically before this had been
-  doing a playbook with multiple includes for other playbooks
-  representing different servers in our stack. Playbook launching
-  of playbooks is slow and very serial.
+  Powerplay allows you to run multiple Ansible
+  playbooks in parallel. Depending on how you
+  organize your playbooks, this can be a solid
+  win. I basically before this had been doing a
+  playbook with multiple includes for other
+  playbooks representing different servers in our
+  stack. Playbook launching of playbooks is slow
+  and very serial.
 
-  Basically, the playbooks are all contained, 
-  so no interdependencies. And in my case, running in the
-  cloud, so no reason why they can't be running in parallel
+  Basically, the playbooks are all contained, so
+  no interdependencies. And in my case, running
+  in the cloud, so no reason why they can't be
+  running in parallel
 
-  Powerplay allows you to specify vars common
-  to all playbooks, and also vars specific
-  to some playbooks so by which you can
-  make your setup very DRY.
+  Powerplay allows you to specify vars common to
+  all playbooks, and also vars specific to some
+  playbooks so by which you can make your setup
+  very DRY.
 
-  All the Ansible playbooks are executed in seperate processes,
-  and thus avoiding a number of the "side effects" you would
-  normally encounter with running multiple playbooks with
+  All the Ansible playbooks are executed in
+  seperate processes, and thus avoiding a number
+  of the "side effects" you would normally
+  encounter with running multiple playbooks with
   Ansible includes.
 
   For example, here is Powerplay integrated with tmux:
@@ -33,20 +37,22 @@
    Please see [[RELEASE_NOTES.org][Release Notes]]
 ** Features and Cavets
 *** Integration with TMUX
-    When running multiple Ansible Playbooks concurrently,
-    one would like to be able to see the output of each
-    in a reasonable manner. To faciliate this in this
-    initial realse, we shall make heavy use of TMUX panes
+    When running multiple Ansible Playbooks
+    concurrently, one would like to be able to
+    see the output of each in a reasonable
+    manner. To faciliate this in this initial
+    realse, we shall make heavy use of TMUX panes
     to dump the output.
 
-    So basically, you need as many panes as you have
-    concurrent Ansible Playbooks in this initial release. In 
-    subsequent releases, Curses will be directly
-    leveraged to create "tabs" for the multiple output
-    streams. We may even do this, still, through TMUX.
+    So basically, you need as many panes as you
+    have concurrent Ansible Playbooks in this
+    initial release. In subsequent releases,
+    Curses will be directly leveraged to create
+    "tabs" for the multiple output streams. We
+    may even do this, still, through TMUX.
 
-    Your input on this is strongly encouarged. We will not
-    be supporting Screen at all. Sorry.
+    Your input on this is strongly encouarged. We
+    will not be supporting Screen at all. Sorry.
 
 ** DSL Terminology & Documentation
 *** DSL
@@ -59,14 +65,15 @@
      will take effect.
 **** playbooks
      playbooks are a collection of groups, and
-     each group are normally executed serially. This will
-     allow you to organize your plays in an intelligent
-     manner to deploy and manage resources and assets
-     that may have to be done in a serial manner.
+     each group are normally executed
+     serially. This will allow you to organize
+     your plays in an intelligent manner to
+     deploy and manage resources and assets that
+     may have to be done in a serial manner.
 **** group
-     A group is a collection of books that all execute
-     in parallel. Books are required to be independent of
-     each other.
+     A group is a collection of books that all
+     execute in parallel. Books are required to
+     be independent of each other.
 **** book
      A book has a direct correspondence to an Ansible
      playbook, and will execute that Yaml file
@@ -91,9 +98,9 @@
 
    You can place a config clause either globally,
    inside of playbooks, inside of groups, and the
-   variable set up this way are inherited to the inner
-   clauses, thus allowing you to keep your specifications
-   DRYer.
+   variable set up this way are inherited to the
+   inner clauses, thus allowing you to keep your
+   specifications DRYer.
 
    For example:
    #+BEGIN_SRC ruby
@@ -103,11 +110,12 @@
    end
    #+END_SRC
 
-   Note that 'playbook_directory' is special, as it allows
-   you to define the directory all of your Ansible playbooks
-   can be found. You can also specify this anywhere
-   you can use the configuration clause, so you
-   may set up different playbook directories for different
+   Note that 'playbook_directory' is special, as
+   it allows you to define the directory all of
+   your Ansible playbooks can be found. You can
+   also specify this anywhere you can use the
+   configuration clause, so you may set up
+   different playbook directories for different
    playbook collections.
 
    #+BEGIN_SRC ruby
@@ -121,10 +129,12 @@
    end
    #+END_SRC
    
-   The above shows Ansible variables for my specialiezd setup
-   that is geared with work with AWS. You are free to specify
-   any variables here, which will be injected into 
-   ansible-playbook through the '--extra-vars' parameter.
+   The above shows Ansible variables for my
+   specialiezd setup that is geared with work
+   with AWS. You are free to specify any
+   variables here, which will be injected into
+   ansible-playbook through the '--extra-vars'
+   parameter.
 
    Here is a group clause with a single book in it:
 
@@ -137,8 +147,8 @@
    end
    #+END_SRC
 
-   Which issues the following command to Ansible (based on the
-   earlier configuration):
+   Which issues the following command to Ansible
+   (based on the earlier configuration):
 
    #+BEGIN_SRC bash
    ansible-playbook playbooks/nat.yml \
@@ -247,34 +257,36 @@ Description:
     and I will include them if they are good.
 
 ** Concurrency
-   We offer a finely controllable concurency model
-   in the DSL with groups. The short of it is that
-   a group may be marked as :sync or :async. All
-   contents of a :sync group shall be executed serially.
-   All contents of an :async group shall be executed
-   concurrently.
+   We offer a finely controllable concurency
+   model in the DSL with groups. The short of it
+   is that a group may be marked as :sync or
+   :async. All contents of a :sync group shall be
+   executed serially.  All contents of an :async
+   group shall be executed concurrently.
 
    As you can now nest groups, and that each
-   group is either synchronous or asynchronous, how
-   these interact requires a bit of understanding
-   as to how the sync and async job queing mechanism
-   in PowerPlay actually works.
+   group is either synchronous or asynchronous,
+   how these interact requires a bit of
+   understanding as to how the sync and async job
+   queing mechanism in PowerPlay actually works.
 
 *** The Gory Details behind how :sync and :async
     Internally, we have two job queues, sync_jobs
-    and async_jobs. We also have -- at least conceptually
-    -- two run queues, sync_runs and async_runs,
-    to reflect queues of currenly running jobs, or books.
-    A "job" or a "book" represent an actual Ansible Playbook 
-    being run, or waiting to be run.
+    and async_jobs. We also have -- at least
+    conceptually -- two run queues, sync_runs and
+    async_runs, to reflect queues of currenly
+    running jobs, or books.  A "job" or a "book"
+    represent an actual Ansible Playbook being
+    run, or waiting to be run.
     
     | enqueue    | deque and run 'queues' |
     |------------+------------------------|
     | sync_jobs  | sync_runs              |
     | async_jobs | async_runs             |
 
-    As well, we have the following queuing rules. Please note
-    that "iff" is the mathematical "iff", meaning "if and only if".
+    As well, we have the following queuing
+    rules. Please note that "iff" is the
+    mathematical "iff", meaning "if and only if".
 
     | rule            | details     | behavior                                             |
     |-----------------+-------------+------------------------------------------------------|
@@ -283,23 +295,29 @@ Description:
     | dequeue and run | async queue | grab everything and run it concurrently              |
     |                 | sync queue  | grab one at a time and run it until it completes     |
 
-    Note that "dequeue and run" flips back and forth between working on the sync and async 
+    Note that "dequeue and run" flips back and
+    forth between working on the sync and async
     queues. Never both simultaneously.
 
 **** Nested Groups
-     You can appreicate that understanding the behavior and "interaction" of
-     nested queues can get pretty hairy, but just keep in mind the rules above,
-     as your nesting will rigorously adhere to the logic above, even as it 
-     descends into the queues. The group designation only directly affects
-     its immediate jobs, or books. It does not directly affect the books
-     in its nested children.
+     You can appreicate that understanding the
+     behavior and "interaction" of nested queues
+     can get pretty hairy, but just keep in mind
+     the rules above, as your nesting will
+     rigorously adhere to the logic above, even
+     as it descends into the queues. The group
+     designation only directly affects its
+     immediate jobs, or books. It does not
+     directly affect the books in its nested
+     children.
 
 **** TODO Scenarios
 
 ** Contributing to ansible-powerplay
-   Your parcipitation is welcome, and I will respond to your
-   pull requests in a timely fashion as long as I am not
-   pulling an "Atlas" at my current job! lol
+   Your parcipitation is welcome, and I will
+   respond to your pull requests in a timely
+   fashion as long as I am not pulling an "Atlas"
+   at my current job! lol
  
    + Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
    + Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
@@ -310,5 +328,5 @@ Description:
    + Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
 ** Copyright
-   Copyright (c) 2016 Fred Mitchell. See LICENSE.txt for
-   further details.
+   Copyright (c) 2016 Fred Mitchell. See
+   LICENSE.txt for further details.
