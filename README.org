@@ -4,29 +4,26 @@
   [[https://gitter.im/flajann2/ansible-powerplay?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge][file:https://badges.gitter.im/flajann2/ansible-powerplay.svg]]
 
   Powerplay allows you to run multiple Ansible
-  playbooks in parallel. Depending on how you
-  organize your playbooks, this can be a solid
-  win. I basically before this had been doing a
-  playbook with multiple includes for other
-  playbooks representing different servers in our
-  stack. Playbook launching of playbooks is slow
-  and very serial.
+  playbooks in parallel. Depending on how you organize
+  your playbooks, this can be a solid win. I basically
+  before this had been doing a playbook with multiple
+  includes for other playbooks representing different
+  servers in our stack. Playbook launching of playbooks
+  is slow and very serial.
 
-  Basically, the playbooks are all contained, so
-  no interdependencies. And in my case, running
-  in the cloud, so no reason why they can't be
-  running in parallel
+  Basically, the playbooks are all contained, so no
+  interdependencies. And in my case, running in the
+  cloud, so no reason why they can't be running in
+  parallel
 
-  Powerplay allows you to specify vars common to
-  all playbooks, and also vars specific to some
-  playbooks so by which you can make your setup
-  very DRY.
+  Powerplay allows you to specify vars common to all
+  playbooks, and also vars specific to some playbooks
+  so by which you can make your setup very DRY.
 
-  All the Ansible playbooks are executed in
-  seperate processes, and thus avoiding a number
-  of the "side effects" you would normally
-  encounter with running multiple playbooks with
-  Ansible includes.
+  All the Ansible playbooks are executed in seperate
+  processes, and thus avoiding a number of the "side
+  effects" you would normally encounter with running
+  multiple playbooks with Ansible includes.
 
   For example, here is Powerplay integrated with tmux:
   #+CAPTION: Powerplay writing to tmux panes, one pane per playbook.
@@ -38,21 +35,20 @@
 ** Features and Cavets
 *** Integration with TMUX
     When running multiple Ansible Playbooks
-    concurrently, one would like to be able to
-    see the output of each in a reasonable
-    manner. To faciliate this in this initial
-    realse, we shall make heavy use of TMUX panes
-    to dump the output.
+    concurrently, one would like to be able to see the
+    output of each in a reasonable manner. To faciliate
+    this in this initial realse, we shall make heavy
+    use of TMUX panes to dump the output.
 
-    So basically, you need as many panes as you
-    have concurrent Ansible Playbooks in this
-    initial release. In subsequent releases,
-    Curses will be directly leveraged to create
-    "tabs" for the multiple output streams. We
-    may even do this, still, through TMUX.
+    So basically, you need as many panes as you have
+    concurrent Ansible Playbooks in this initial
+    release. In subsequent releases, Curses will be
+    directly leveraged to create "tabs" for the
+    multiple output streams. We may even do this,
+    still, through TMUX.
 
-    Your input on this is strongly encouarged. We
-    will not be supporting Screen at all. Sorry.
+    Your input on this is strongly encouarged. We will
+    not be supporting Screen at all. Sorry.
 
 ** DSL Terminology & Documentation
 *** DSL
@@ -64,16 +60,15 @@
      anywhere, and the expected nested scoping
      will take effect.
 **** playbooks
-     playbooks are a collection of groups, and
-     each group are normally executed
-     serially. This will allow you to organize
-     your plays in an intelligent manner to
-     deploy and manage resources and assets that
-     may have to be done in a serial manner.
+     playbooks are a collection of groups, and each
+     group are normally executed serially. This will
+     allow you to organize your plays in an intelligent
+     manner to deploy and manage resources and assets
+     that may have to be done in a serial manner.
 **** group
-     A group is a collection of books that all
-     execute in parallel. Books are required to
-     be independent of each other.
+     A group is a collection of books that all execute
+     in parallel by default. Books are required to be
+     independent of each other.
 **** book
      A book has a direct correspondence to an Ansible
      playbook, and will execute that Yaml file
@@ -110,13 +105,12 @@
    end
    #+END_SRC
 
-   Note that 'playbook_directory' is special, as
-   it allows you to define the directory all of
-   your Ansible playbooks can be found. You can
-   also specify this anywhere you can use the
-   configuration clause, so you may set up
-   different playbook directories for different
-   playbook collections.
+   Note that 'playbook_directory' is special, as it
+   allows you to define the directory all of your
+   Ansible playbooks can be found. You can also specify
+   this anywhere you can use the configuration clause,
+   so you may set up different playbook directories for
+   different playbook collections.
 
    #+BEGIN_SRC ruby
    # sṕecific configuration for :development
@@ -257,18 +251,18 @@ Description:
     and I will include them if they are good.
 
 ** Concurrency
-   We offer a finely controllable concurency
-   model in the DSL with groups. The short of it
-   is that a group may be marked as :sync or
-   :async. All contents of a :sync group shall be
-   executed serially.  All contents of an :async
-   group shall be executed concurrently.
+   We offer a finely controllable concurency model in
+   the DSL with groups. The short of it is that a group
+   may be marked as :sync or :async. All contents of a
+   :sync group shall be executed serially.  All
+   contents of an :async group shall be executed
+   concurrently.
 
-   As you can now nest groups, and that each
-   group is either synchronous or asynchronous,
-   how these interact requires a bit of
-   understanding as to how the sync and async job
-   queing mechanism in PowerPlay actually works.
+   As you can now nest groups, and that each group is
+   either synchronous or asynchronous, how these
+   interact requires a bit of understanding as to how
+   the sync and async job queing mechanism in PowerPlay
+   actually works.
 
 *** The Gory Details behind how :sync and :async
     Internally, we have two job queues, sync_jobs
@@ -310,6 +304,37 @@ Description:
      immediate jobs, or books. It does not
      directly affect the books in its nested
      children.
+
+**** Implemention of the Execution Planning
+     In actuality, what we do at the DSL processing
+     level is decide whether or not a book is a sync
+     book or async book. We generate the actual command
+     line code at that point, and create a pair [:sync,
+     book] or [:async, book] and push that into the
+     planning queue, which is a FIFO queue.
+
+     | book        | enqueue to FIFO planning_queue |
+     |-------------+--------------------------------|
+     | sync group  | [:sync, bash string]           |
+     | async group | [:async, bash string]          |
+     | naked       | [:sync, bash string]           |
+
+     We determine what execution planning a book gets
+     by its immediate grouping. A group's default is
+     :async.  Naked books are :sync by default. We do
+     this to be intuitive about how things work in the
+     DSL. You should explicitely have to specify what's
+     going to be async, since that is the "more
+     dangerous" mode.
+
+     | dequeue from FIFO     | action                                                                                            |
+     |-----------------------+---------------------------------------------------------------------------------------------------|
+     | [:sync, bash string]  | join all entries in async_run_queue, clear that queue, and then execute and join bash string task |
+     | [:async, bash string] | execute and enqueue to async_run_queue                                                            |
+
+     This simplifies the algorithm and makes it easier
+     to understand, and should result in a more
+     intuitive grasp on how to write the PowerPlay.
 
 **** TODO Scenarios
 
