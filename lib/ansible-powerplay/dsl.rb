@@ -3,6 +3,8 @@ module Powerplay
   module DSL
     @@config_stack = [{}]
     @@global_config = {}
+    @@planning_queue = []
+    
     SPECIAL_PARAMS = [:playbook_directory, :inventory]
 
     def _bump
@@ -25,6 +27,18 @@ module Powerplay
       _global[:options][:verbose]
     end
 
+    def _enqueue book
+      @@planning_queue << book
+    end
+
+    def _dequeue
+      @@planning_queue.shift
+    end
+
+    def _peek
+      @@planning_queue.first
+    end
+
     class Dsl
       attr :config, :type, :desc
 
@@ -38,6 +52,11 @@ module Powerplay
 
       def configuration(type=:vars, desc=nil, &block)
         @config[type] = DslConfiguration.new(type, desc, &block).config
+      end
+
+      def book(type, yaml, desc: nil, plan: :sync, &block)
+        @books ||= []
+        _enqueue DslBook.new(type, yaml, desc, plan, &block)
       end
 
       def initialize(type, desc, &ignore)
@@ -57,10 +76,12 @@ module Powerplay
 
     class DslBook < Dsl
       attr :yaml
+      attr :plan
 
-      def initialize(type, yaml, desc=nil, &block)
+      def initialize(type, yaml, desc: nil, plan: nil, &block)
         super(type, desc, &block)
         @yaml = yaml
+        @plan = plan
         _bump
         instance_eval(&block) if block_given?
         @config = _dip
@@ -76,22 +97,19 @@ module Powerplay
 
     class DslGroup < Dsl
       # The entries here may either be books or groups.
-      attr :books 
       attr_reader :exec
 
-      def book(type, yaml, desc=nil, &block)
-        @books ||= []
-        books << DslBook.new(type, yaml, desc, &block)
+      def group name, desc = nil, plan: :async, &block
+        DslGroup.new(name, desc, plan, &block)
       end
 
-      def group name, desc = nil, execution = :sync, &block
-        @books ||= []
-        books << DslGroup.new(name, desc, execution, &block)
+      def book(type, yaml, desc: nil, plan: @exec, &block)
+        _enqueue DslBook.new(type, yaml, desc, plan, &block)
       end
 
-      def initialize(type, desc, execution, &block)
+      def initialize(type, desc, plan, &block)
         super(type, desc, &block)
-        @exec = execution
+        @exec = plan
         _bump
         instance_eval &block 
         @config = _dip
@@ -101,9 +119,9 @@ module Powerplay
     class DslPlaybook < Dsl
       attr :groups
 
-      def group name, desc = nil, execution = :sync, &block
+      def group name, desc = nil, plan = :sync, &block
         @groups ||= []
-        groups << DslGroup.new(name, desc, execution, &block)
+        groups << DslGroup.new(name, desc, plan, &block)
       end
 
       def initialize (type, desc, &block)
