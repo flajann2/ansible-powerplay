@@ -1,0 +1,15 @@
+---
+- hosts: local
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: setting a fact
+      set_fact:
+        nat:
+          - { 00 : first, 01 : hello, 02 : world }
+    - name: test fact and passed in variables
+      debug:
+        msg: "first test {{nat}} stack {{stack}} AWS instance type {{krell_type}} AWS disk size {{krell_disk_size}}"
+    - name: wait 5 seconds
+      pause:
+        seconds: 5

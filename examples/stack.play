@@ -25,7 +25,7 @@ playbooks :development do
 
   # These are 'naked# books, which shall be grouped
   book :first, "first.yml"
-  book :second, "first.yml"
+  book :second, "second.yml"
 
   # Groups are executed serially (synchronously) by default.
   group :first, "our very first synchronous group" do
