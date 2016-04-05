@@ -10,3 +10,9 @@
     tmux list-panes -F '#{pane_id} #{pane_tty} #{pane_right} #{pane_left} #{pane_top} #{pane_bottom}'
     #+END_SRC
     
+** PowerPlay command for testing
+   #+BEGIN_SRC bash
+   cd examples/
+   ../bin/powerplay play -p development -v1 -u
+   #+END_SRC
+ 
