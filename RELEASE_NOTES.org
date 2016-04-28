@@ -29,6 +29,7 @@
    we'll remove them from this list.
    |       Date | Issue                      | Description                                                                                                                                              |
    |------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | 2016-04-28 | Redirect to tty blows up   | On some none-tmux environments, redirects to tty fails with "permission denied". We need to remove redirects completely when the -m option is not used.  |
    | 2016-03-03 | Status dump out of order   | Currently a bit out of order due to the fact that the output are being run in different threads and so the text is being printed nondeterministically.   |
    | 2016-02-20 | Platforms other than Linux | We need to test on Mac OSX and Windows. Should work fine on Macs. I do not plan to support Windows in general, but may accept pull requests to that end. |
 
