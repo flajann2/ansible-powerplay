@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
-# Test script for the Powerplay DSL
+
+# Test scripts for the Powerplay DSL
+# Basically, this is Ruby syntax used
+# to implement a DSL. As the full
+# power of Ruby is here, you can
+# use any of the Ruby constructs in
+# your Powerplays. However, it is
+# strongly recommended that you do so
+# very judicously.
 
 # This is a global system configuration
 # It assumes your current directory is the
@@ -9,11 +17,8 @@ configuration :system do
   inventory "inventory"
 end
 
-
 # It is strongly recommended that your organize
 # your powerplay playbooks into seperate files
-load 'test1.play'
 
-# You can also 'load' other powerplay files, allowing you
-# to divide up your specifications.
-load 'test2.play'
+load 'development.play'
+load 'production.play'

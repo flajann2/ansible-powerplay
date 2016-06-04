@@ -56,7 +56,7 @@ module Powerplay
 
       def book(type, yaml, desc: nil, plan: :sync, &block)
         @books ||= []
-        _enqueue DslBook.new(type, yaml, desc, plan, &block)
+        _enqueue DslBook.new(type, yaml, desc: desc, plan: plan, &block)
       end
 
       def initialize(type, desc, &ignore)
@@ -104,7 +104,7 @@ module Powerplay
       end
 
       def book(type, yaml, desc: nil, plan: @exec, &block)
-        _enqueue DslBook.new(type, yaml, desc, plan, &block)
+        _enqueue DslBook.new(type, yaml, desc: desc, plan: plan, &block)
       end
 
       def initialize(type, desc, plan, &block)
