@@ -126,7 +126,7 @@ module Powerplay
     class DslPlaybook < Dsl
       attr :groups
 
-      def group name, desc = nil, plan = :sync, &block
+      def group name, desc = nil, plan = :async, &block
         @groups ||= []
         groups << DslGroup.new(name, desc, plan, &block)
       end
