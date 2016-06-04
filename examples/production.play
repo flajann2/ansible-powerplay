@@ -6,10 +6,10 @@ playbooks :production do
   # sṕecific configuration for :development
   configuration do 
     stack :production
-    krell_type "m4.medium"
+    aws_type "m4.medium"
     servers 1
     rolling 3
-    krell_disk_size 200
+    aws_disk_size 200
   end
 
   # Groups are executed serially.
@@ -26,7 +26,7 @@ playbooks :production do
     book :dat, "dat.yml"
 
     book :rabbit, "rabbitmq.yml" do
-      krell_type "t2.medium"
+      aws_type "t2.medium"
     end
 
     book :es, "elasticsearch.yml" do
@@ -34,8 +34,8 @@ playbooks :production do
       cluster_name :es
       servers 3
       heapsize "2g"
-      krell_type "t2.medium"
-      krell_disk_size 200
+      aws_type "t2.medium"
+      aws_disk_size 200
     end
   end
 end

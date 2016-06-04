@@ -8,10 +8,10 @@ playbooks :development do
   # sṕecific configuration for :development
   configuration do 
     stack :development
-    krell_type "t2.small"
+    aws_type "t2.small"
     servers 1
     rolling 3
-    krell_disk_size 20
+    aws_disk_size 20
   end
 
   # These are 'naked# books, which shall be treated
@@ -33,12 +33,12 @@ playbooks :development do
     book :dat, "dat.yml"
 
     book :rabbit, "rabbitmq_cluster.yml" do
-      krell_type "t2.medium"
+      aws_type "t2.medium"
     end
 
     group :nested, "nested group", :async do
       configuration do 
-        krell_type "c4.large"
+        aws_type "c4.large"
         servers 2
       end
 
@@ -47,7 +47,7 @@ playbooks :development do
       
       group :deepnest1, "deeply nested group", :async do
         configuration do 
-          krell_type "c4.tiny"
+          aws_type "c4.tiny"
           servers 2
         end
 
@@ -57,7 +57,7 @@ playbooks :development do
 
       group :deep_nest2, "deeply nested group 2", :async do
        configuration do 
-          krell_type "c4.small"
+          aws_type "c4.small"
           servers 3
         end
 
@@ -76,8 +76,8 @@ playbooks :development do
       cluster_name :es
       servers 3
       heapsize "2g"
-      krell_type "t2.medium"
-      krell_disk_size 200
+      aws_type "t2.medium"
+      aws_disk_size 200
     end
   end
 end
