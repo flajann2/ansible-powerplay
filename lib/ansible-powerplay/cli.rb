@@ -43,8 +43,7 @@ module Powerplay
         pp DSL::_global if DSL::_verbosity >= 3
         Play::Ansible::power_run
       end
-      # TODO: do we want play to be the default command?
-      #default_task :play
+      default_task :play if $PP_BASENAME == 'pp'
       
       desc 'version', 'display the version of this PowerPlay install'
       def version

@@ -2,6 +2,7 @@
 
 PP_PATH = File.expand_path '..', File.dirname(__FILE__)
 PP_EXECUTABLE = File.expand_path 'bin/powerplay', Dir.pwd
+$PP_BASENAME = File.basename(__FILE__)
 
 $:.unshift File.join([PP_PATH, 'lib'])
 

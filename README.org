@@ -31,7 +31,13 @@
   [[./examples/powerplay_screenshot.jpeg]]
 
 ** Release Notes
-   Please see [[RELEASE_NOTES.org][Release Notes]]
+   Please see [[RELEASE_NOTES.org][Release Notes]].
+
+   The version 1.x releases have a new DSL
+   which may be incompatable with the older 0.x DSL.
+   There will be a lapse between the release and the
+   documentaiton of the differences.
+
 ** Features and Cavets
 *** Integration with TMUX
     When running multiple Ansible Playbooks
@@ -51,6 +57,10 @@
     not be supporting Screen at all. Sorry.
 
 ** DSL Terminology & Documentation
+   Note that this is the DSL for version 1.x of
+   PowerPlay. For 0.x, please see those tags in
+   GitHub.
+
 *** DSL
     The DSL is straightforward as possible,
     simple and elegant to allow you to write 
@@ -60,21 +70,36 @@
      anywhere, and the expected nested scoping
      will take effect.
 **** playbooks
-     playbooks are a collection of groups, and each
-     group are normally executed serially. This will
+     playbooks are a collection of groups, and a group
+     defaults to async mode for its members.
+
+     Group are normally executed serially. This will
      allow you to organize your plays in an intelligent
      manner to deploy and manage resources and assets
      that may have to be done in a serial manner.
 **** group
-     A group is a collection of books that all execute
-     in parallel by default. Books are required to be
-     independent of each other.
+     A group is a collection of books or other groups
+     that all execute in parallel by default.
+     Books are required to be independent of 
+     each other. If they are not, you can set
+     them up to execute serially.
+
 **** book
      A book has a direct correspondence to an Ansible
      playbook, and will execute that Yaml file
      given the configuration variables as parameters.
 
      Here is where var inheritance becomes useful.
+     Note that all the configuration variables
+     set at the time the book is called are all
+     passed in as --extra-vars to Ansible Playbook.
+     The Playbook may not need all the vars passed
+     in, but care must be taken that no vars
+     are used in a different manner than expected.
+     We currently have no way of knowing which
+     vars are needed or not, and to specifiy that 
+     would make the syntax messy and loose some
+     of the advantages of var inheritance.
 
 ** Installation
    Easy installation. From command-line:
@@ -234,6 +259,23 @@ Description:
   Plays a PowerPlay script. The entries in the script, as specified inside of a group, are run in parallel by default.
     #+END_SRC
 
+    There is a short-hand 'pp' command you may use
+    that has the 'play' task as the default. So, for
+    example, rather than having to type:
+
+    #+begin_src bash
+    powerplay play -p development ...
+    #+end_src
+
+    You can do instead:
+
+    #+begin_src bash
+    pp -p development ...
+    #+end_src
+
+    In all our examples, we will use the longer
+    'powerplay' command, but you can easily
+    substitute 'pp'.
 
 *** Example .play Script
     To play around with the example .play script,

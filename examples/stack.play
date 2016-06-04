@@ -9,87 +9,10 @@ configuration :system do
   inventory "inventory"
 end
 
-# A playbook "shelf" (playbooks) must be explicitely invoked from
-# command line by default. Playbooks will execute
-# in parallel unless otherwise specified.
-playbooks :development do
 
-  # sṕecific configuration for :development
-  configuration do 
-    stack :development
-    krell_type "t2.small"
-    servers 1
-    rolling 3
-    krell_disk_size 20
-  end
-
-  # These are 'naked# books, which shall be treated
-  # as synchronous.
-  book :first, "first.yml"
-  book :second, "second.yml"
-
-  # Groups' books are asynchronous by default.
-  group :first, "our very first asynchronous group" do
-    # Books within a group are executed asynchronously,
-    # and therefore must be independent of each other.
-    book :nat, "nat.yml"
-    book :dat, "dat.yml"
-    book :rat, "rat.yml"
-  end
-
-  group :second, "our second group", :sync do
-    book :nat, "nat.yml"
-    book :dat, "dat.yml"
-
-    book :rabbit, "rabbitmq_cluster.yml" do
-      krell_type "t2.medium"
-    end
-
-    group :nested, "nested group", :async do
-      configuration do 
-        krell_type "c4.large"
-        servers 2
-      end
-
-      book :nfirst, "first.yml"
-      book :nsecond, "second.yml"
-      
-      group :deepnest1, "deeply nested group", :async do
-        configuration do 
-          krell_type "c4.tiny"
-          servers 2
-        end
-
-        book :deep_nat, "nat.yml"
-        book :deep_dat, "dat.yml"
-      end
-
-      group :deep_nest2, "deeply nested group 2", :async do
-       configuration do 
-          krell_type "c4.small"
-          servers 3
-        end
-
-        book :da_nat, "nat.yml"
-        book :da_dat, "dat.yml"
-      end
-
-      group :deep_nest3, "deeply nested group 3", :sync do
-        book :ds_nat, "nat.yml"
-        book :ds_dat, "dat.yml"
-      end
-    end
-
-    book :es, "elasticsearch.yml" do
-      esver "1.7.4"
-      cluster_name :es
-      servers 3
-      heapsize "2g"
-      krell_type "t2.medium"
-      krell_disk_size 200
-    end
-  end
-end
+# It is strongly recommended that your organize
+# your powerplay playbooks into seperate files
+load 'test1.play'
 
 # You can also 'load' other powerplay files, allowing you
 # to divide up your specifications.
