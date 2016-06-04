@@ -43,6 +43,11 @@ module Powerplay
         pp DSL::_global if DSL::_verbosity >= 3
         Play::Ansible::power_run
       end
+
+      desc 'version', 'display the version of this PowerPlay install'
+      def version
+        puts "v#{s_version}"
+      end
       
       desc 'ttys', 'list all the TMUX ptys on the current window.'
       def ttys
