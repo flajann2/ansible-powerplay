@@ -331,6 +331,7 @@ Description:
      |-----------------------+---------------------------------------------------------------------------------------------------|
      | [:sync, bash string]  | join all entries in async_run_queue, clear that queue, and then execute and join bash string task |
      | [:async, bash string] | execute and enqueue to async_run_queue                                                            |
+     |                       |                                                                                                   |
 
      This simplifies the algorithm and makes it easier
      to understand, and should result in a more

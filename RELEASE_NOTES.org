@@ -23,7 +23,6 @@
    |         | --book                           | You can select an individual playbook to run                                       |            |
    |         | --group                          | You can select an individual group to run                                          |            |
 
-
 ** Known Outstanding Issues
    Bugs and missing features that needs to be addressed. As they are,
    we'll remove them from this list.
