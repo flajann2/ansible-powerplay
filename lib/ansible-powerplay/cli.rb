@@ -40,7 +40,17 @@ module Powerplay
         DSL::_global[:options] = massage options
         puts "script %s " % [script] if DSL::_global[:options][:verbose] >= 1
         load script, true
-        pp DSL::_global if DSL::_verbosity >= 3
+
+        if DSL::_verbosity >= 3
+          puts "\n*** PARSE TREE & GLOBAL OBJECTS:"
+          pp DSL::_global
+        end
+
+        if DSL::_verbosity >= 4
+          puts "\n**** PLANNING QUEUE:"
+          pp DSL::_planning
+        end
+
         Play::Ansible::power_run
       end
       default_task :play if $PP_BASENAME == 'pp'
