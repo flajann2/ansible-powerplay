@@ -3,9 +3,10 @@ source "https://rubygems.org"
 gem 'thor',             '~> 0'
 gem 'concurrent-ruby', require: 'concurrent'
 gem 'term-ansicolor'
-gem 'colorize',         "~> 0"
+gem 'colorize',         '~> 0'
 gem 'semver',           '~> 1'
 gem 'queue_ding',       '~> 0'
+gem 'awesome_print',    '~> 1'
 
 group :development do
   gem "rspec",          "~> 2"

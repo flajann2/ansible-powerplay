@@ -14,4 +14,3 @@ include QueueDing
 def s_version
   SemVer.find.format "v%M.%m.%p%s"
 end
-puts $PP_BASENAME

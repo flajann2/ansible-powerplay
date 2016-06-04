@@ -7,14 +7,17 @@ module Powerplay
     
     SPECIAL_PARAMS = [:playbook_directory, :inventory]
 
+    # bump the config stack because we are in a child node context
     def _bump
       @@config_stack.push @@config_stack.last.clone
     end
 
+    # pop the config stack, as we have left the child node context
     def _dip
       @@config_stack.pop
     end
 
+    # Get the current config
     def _config
       @@config_stack.last
     end
@@ -39,6 +42,11 @@ module Powerplay
       @@planning_queue.first
     end
 
+    # do NOT modify this directly. use the API above.
+    def _planning
+      @@planning_queue
+    end
+    
     class Dsl
       attr :config, :type, :desc
 
@@ -99,7 +107,7 @@ module Powerplay
       # The entries here may either be books or groups.
       attr_reader :exec
 
-      def group name, desc = nil, plan: :async, &block
+      def group name, desc = nil, plan = :async, &block
         DslGroup.new(name, desc, plan, &block)
       end
 
@@ -127,7 +135,7 @@ module Powerplay
       def initialize (type, desc, &block)
         super
         _bump
-        instance_eval &block
+        instance_eval( &block )
         @config = _dip
       end
     end

@@ -3,6 +3,7 @@ GEM
   specs:
     addressable (2.4.0)
     aquarium (0.5.1)
+    awesome_print (1.6.1)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
@@ -131,6 +132,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print (~> 1)
   bundler (~> 1)
   colorize (~> 0)
   concurrent-ruby
