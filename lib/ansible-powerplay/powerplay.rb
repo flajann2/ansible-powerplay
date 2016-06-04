@@ -102,6 +102,11 @@ module Powerplay
         end
       end
 
+      # Will remove entries from the planning queue in FIFO
+      # fashion, and execution them according to the algorithm
+      # as described in the README.org, Implementation of
+      # the Execution Planning, which is considered "authoritative"
+      # on how power_run works.
       def self.power_run
         bucher = Play::clopts[:book].map{ |b| b.to_sym }
         congroups = Play::clopts[:congroups]

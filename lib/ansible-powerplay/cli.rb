@@ -43,7 +43,7 @@ module Powerplay
 
         if DSL::_verbosity >= 3
           puts "\n*** PLANNING FIFO QUEUE:"
-          pp DSL::_planning.map{ |book| [book.yaml, book.plan] }
+          pp DSL::_planning.map{ |book| [book.type, book.plan, book.yaml] }
 
           puts
         end
