@@ -44,10 +44,15 @@ module Powerplay
         if DSL::_verbosity >= 3
           puts "\n*** PARSE TREE & GLOBAL OBJECTS:"
           pp DSL::_global
+          
+          puts "\n**** PLANNING FIFO QUEUE:"
+          pp DSL::_planning.map{ |book| [book.yaml, book.plan] }
+
+          puts
         end
 
         if DSL::_verbosity >= 4
-          puts "\n**** PLANNING QUEUE:"
+          puts "\n**** PLANNING FIFO QUEUE DETAILS:"
           pp DSL::_planning
         end
 

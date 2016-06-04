@@ -83,8 +83,7 @@ module Powerplay
     end
 
     class DslBook < Dsl
-      attr :yaml
-      attr :plan
+      attr :yaml, :plan
 
       def initialize(type, yaml, desc: nil, plan: nil, &block)
         super(type, desc, &block)
