@@ -73,15 +73,17 @@ module Powerplay
       end
       
       def self.join_jobs
-        @jobs.each{ |j| j.join }
-        @jobs = []
+        while not jobs.empty?
+          jobs.shift.join
+        end
       end
       
       def self.get_book_apcmd(book, bucher, grouppe)
-        dryrun = Play::clopts[:dryrun]
-        extra  = Play::clopts[:extra]
-        tags   = Play::clopts[:tags]
-        sktags = Play::clopts[:sktags]
+        dryrun  = Play::clopts[:dryrun]
+        extra   = Play::clopts[:extra]
+        tags    = Play::clopts[:tags]
+        sktags  = Play::clopts[:sktags]
+        tmuxout = Play::clopts[:tmux]
         tagstr = ''
         if tags and sktags
           puts "Cannot use both --tags (#{tags}) and --skip-tags (#{sktags})"
@@ -101,10 +103,11 @@ module Powerplay
                   ''
                 end
           xxv = [extra[book.type], extra[:all]].compact.join(' ')
-          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars "#{book.aparams} #{xxv}" >#{tty}|
+          redirect = (tmuxout.nil?) ? '' : " > #{tty}"
+          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars "#{book.aparams} #{xxv}" #{redirect}|
           unless DSL::_verbosity < 1
             puts "==============================".green
-            puts "Running book ".light_yellow +
+            puts "Running #{book.plan} book ".light_yellow +
                  ":#{book.type}".light_cyan +
                  " group heirarchy [".light_yellow +
                  "#{book.family.map{|g| ':' + g.to_s}.join(' < ')}".light_cyan +
@@ -112,7 +115,7 @@ module Powerplay
             puts "\n#{apcmd}".yellow
             puts "------------------------------" 
           end
-          dryrun || apcmd
+          (dryrun) ? nil : apcmd
         else
           nil
         end
@@ -132,10 +135,36 @@ module Powerplay
         while DSL::_peek
           book = DSL::_dequeue
           apcmd = get_book_apcmd book, bucher, grouppe
-          jobs << Thread.new {
-            std, status = Open3.capture2e apcmd
-            errors << [book.yaml, apcmd, std] unless status.success?
-          }
+          join_jobs if book.plan == :sync
+          j = unless apcmd.nil?
+                Thread.new(book, apcmd) { |bk, cmd|
+                  std, status = Open3.capture2e cmd
+                  puts std if status.success?
+                  errors << [bk.yaml, cmd, std, status] unless status.success?
+                }
+              else
+                nil
+              end
+          if book.plan == :sync
+            j.join unless j.nil?
+          elsif book.plan == :async
+            jobs << j unless j.nil?
+          else
+            raise "Book plan error #{book.plan} for book #{book.type}"
+          end
+        end
+        # finish the lot and report on any errors
+        join_jobs
+        
+        unless errors.empty?
+          errors.each do |yaml, cmd, txt, status|
+            puts ('=' * 60).light_red
+            puts (('*' * 10) + ' ' + yaml).light_red + " exit status #{status.exitstatus}".light_blue
+            puts txt.light_yellow
+            puts ('-' * 30).red
+            puts cmd.red
+          end
+          exit 10
         end
         
         return
