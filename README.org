@@ -34,9 +34,19 @@
    Please see [[RELEASE_NOTES.org][Release Notes]].
 
    The version 1.x releases have a new DSL
-   which may be incompatable with the older 0.x DSL.
-   There will be a lapse between the release and the
+   which may be slightly incompatable with the older 0.x DSL.
+   There will be a lapse between this release and the
    documentaiton of the differences.
+
+   Also, the capture of the output from ansible-powerplay is 
+   handled a bit more intelligently. If you do not specify the
+   --tmux (or -m) option, all output is now currently captured
+   by powerplay and redumped to the console.
+
+   Because you may still want to see the color from ansible-powerplay,
+   you can alter ansible.cfg and add the following line:
+
+   + force_color = 1
 
 ** Features and Cavets
 *** Integration with TMUX
@@ -78,10 +88,13 @@
        + gem install ansible-powerplay
     2. Clone this project locally, then cd into the examples directory
        + git clone https://github.com/flajann2/ansible-powerplay.git
-       + cd
-    3. source ansible-paths.sh
-       + pp -p development -v2
+       + cd ansible-powerplay/examples
+    3. source ansible-paths and run Powerplay
+       + source ansible-paths.sh
+       + powerplay play -p development -v2
 
+    Note that I deliberately left a missing "elasticsearch.yml" so you
+    can see how Powerplay handles the errors.
       
 **** configuration
      You can intersperse configuration blocks
