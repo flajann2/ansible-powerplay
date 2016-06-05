@@ -75,10 +75,10 @@
     To run the powerplay example:
 
     + Install Ansible Powerplay
-      ++ gem install ansible-powerplay
+    ++ gem install ansible-powerplay
     + Clone this project locally, then cd into the examples directory
-      ++ git clone https://github.com/flajann2/ansible-powerplay.git
-      ++ cd
+    ++ git clone https://github.com/flajann2/ansible-powerplay.git
+    ++ cd
     + source ansible-paths.sh
     + pp -p development -v2
 
