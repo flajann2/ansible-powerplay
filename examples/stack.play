@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Test scripts for the Powerplay DSL
 # Basically, this is Ruby syntax used
 # to implement a DSL. As the full

@@ -65,6 +65,24 @@
     The DSL is straightforward as possible,
     simple and elegant to allow you to write 
     your Powerplays in a DRY manner.
+
+    For examples, please see the following:
+    | [[examples/stack.play][stack.play]]       | This is loaded by default, and you must be in your current directory     |
+    | [[examples/development.play][development.play]] | This is a fullblown Power Playbook for a hypothetical development stack. |
+    | [[examples/production.play][production.play]]  | This is a fullblown Power Playbook for a hypothetical production stack.  |
+    | [[examples/playbooks][playbooks]]        | Sample Ansible playbooks called by Powerplay.                            |
+
+    To run the powerplay example:
+
+    + Install Ansible Powerplay
+      ++ gem install ansible-powerplay
+    + Clone this project locally, then cd into the examples directory
+      ++ git clone https://github.com/flajann2/ansible-powerplay.git
+      ++ cd
+    + source ansible-paths.sh
+    + pp -p development -v2
+
+      
 **** configuration
      You can intersperse configuration blocks
      anywhere, and the expected nested scoping
@@ -410,3 +428,39 @@ Description:
 ** Copyright
    Copyright (c) 2016 Fred Mitchell. See
    LICENSE.txt for further details.
+
+** The Junkyard
+   This area should be ignored, just a place
+   for me to keep old snippets of code and other
+   notes that will be of relevance to no one else.
+*** Old execution planning model
+    #+begin_src ruby
+    # old code and will be deleted
+    playbooks do |pname, playbook|
+      group_threads = []
+          puts "PLAYBOOK #{pname} (group=#{Play::clopts[:group]}) -->"
+          groups playbook do |group|
+            tg = nil
+            group_threads << (tg = Thread.new {
+                                puts "    GROUP #{group.type} (book=#{bucher}, cg=#{congroups}) -->"
+                                book_threads = []
+                                errors = []
+                                group.books.each { |book| get_book_apcmd(book, bucher, book_threads, errors) }
+                                book_threads.each{ |t| t.join }
+                                unless errors.empty?
+                                  errors.each do |yaml, cmd, txt|
+                                    puts '=' * 30
+                                    puts ('*' * 10) + ' ' + yaml
+                                    puts txt
+                                    puts '-' * 30
+                                    puts cmd
+                                  end
+                                  exit 10
+                                end
+                              })
+            # Always wait here unless we're concurrent
+            group_threads.join unless congroups
+          end
+          group_threads.each{ |t| t.join }
+        end
+    #+end_src

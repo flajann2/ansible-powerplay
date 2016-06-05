@@ -7,26 +7,26 @@
   major number. Of course, you can read all about it here.
 
 ** Release Notes
-   | Release | Feature / Bug                          | Description                                                                                                                 |       Date |
-   |---------+----------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+------------|
-   | v1.0.0  | version                                | Prints version                                                                                                              | 2061-06-04 |
-   |         | powerplay / pp shorthand command       | Play task defaults if you use the shorthand 'pp' on the commandline                                                         | 2061-06-04 |
-   |         | DSL incompatible changes               | Nestable groups, naked books. older DSL not gauranteed to be compatable.                                                    |            |
-   |         | Internal rewrite of the execution flow | Logic for execution flow rewritten to allow fine-grained control over what is sync and async.                               |            |
-   |         | NOOP books                             | Internal :noop book types to ensure that 2 async groups that are themselves supposed to execute asynchronously actually do. |            |
-   | v0.2.3  | --verbose                              | Will display Ansible commands on a --verbosity=1 or higher.                                                                 | 2016-03-17 |
-   | v0.2.2  | --tags, --skip-tags                    | Ansible tag support                                                                                                         | 2016-03-07 |
-   | v0.2.1  | --extra-vars                           | A way of passing extra vars to the Ansible playbooks. Please see the documentation                                          | 2016-03-01 |
-   | v0.2.0  | powerplay play (behavior change)       | If script is not given, now defaults to 'stack.play' in the current directory.                                              | 2016-02-29 |
-   | v0.1.3  | --tmux                                 | Better handling at distributing the panes.                                                                                  | 2016-02-26 |
-   | v0.1.2  | --tmux. --no-tmux                      | Default output now goes to current tty                                                                                      | 2016-02-23 |
-   | v0.1.1  | --book, --group, --play                | Minor bug with the array handling                                                                                           | 2016-02-22 |
-   | v0.1.0  | --book, --group, --play                | Now each can take multiple specifications                                                                                   | 2016-02-22 |
-   | v0.0.8  | Creation of these Release Notes        | About bloody time. The prior releases were all mostly bug fixes, and so...                                                  | 2016-02-20 |
-   |         | --tmux                                 | Now you can optionally specify the window number                                                                            |            |
-   |         | --tmux                                 | Now checks to ensure it does not dump to its own pane                                                                       |            |
-   |         | --book                                 | You can select an individual playbook to run                                                                                |            |
-   |         | --group                                | You can select an individual group to run                                                                                   |            |
+   | Release | Feature / Bug                          | Description                                                                                   |       Date |
+   |---------+----------------------------------------+-----------------------------------------------------------------------------------------------+------------|
+   | v1.0.0  | version                                | Prints version                                                                                | 2061-06-04 |
+   |         | powerplay / pp shorthand command       | Play task defaults if you use the shorthand 'pp' on the commandline                           | 2061-06-04 |
+   |         | DSL incompatible changes               | Nestable groups, naked books. older DSL not gauranteed to be compatable.                      |            |
+   |         | Internal rewrite of the execution flow | Logic for execution flow rewritten to allow fine-grained control over what is sync and async. |            |
+   |         | Internal NOOP books                    | We need to demarcate groups executing synchronously that they themselves have async members.  |            |
+   | v0.2.3  | --verbose                              | Will display Ansible commands on a --verbosity=1 or higher.                                   | 2016-03-17 |
+   | v0.2.2  | --tags, --skip-tags                    | Ansible tag support                                                                           | 2016-03-07 |
+   | v0.2.1  | --extra-vars                           | A way of passing extra vars to the Ansible playbooks. Please see the documentation            | 2016-03-01 |
+   | v0.2.0  | powerplay play (behavior change)       | If script is not given, now defaults to 'stack.play' in the current directory.                | 2016-02-29 |
+   | v0.1.3  | --tmux                                 | Better handling at distributing the panes.                                                    | 2016-02-26 |
+   | v0.1.2  | --tmux. --no-tmux                      | Default output now goes to current tty                                                        | 2016-02-23 |
+   | v0.1.1  | --book, --group, --play                | Minor bug with the array handling                                                             | 2016-02-22 |
+   | v0.1.0  | --book, --group, --play                | Now each can take multiple specifications                                                     | 2016-02-22 |
+   | v0.0.8  | Creation of these Release Notes        | About bloody time. The prior releases were all mostly bug fixes, and so...                    | 2016-02-20 |
+   |         | --tmux                                 | Now you can optionally specify the window number                                              |            |
+   |         | --tmux                                 | Now checks to ensure it does not dump to its own pane                                         |            |
+   |         | --book                                 | You can select an individual playbook to run                                                  |            |
+   |         | --group                                | You can select an individual group to run                                                     |            |
 
 ** Known Outstanding Issues
    Bugs and missing features that needs to be addressed. As they are,
