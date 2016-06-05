@@ -43,7 +43,7 @@ module Powerplay
         if DSL::_verbosity >= 3
           puts "\n*** PLANNING FIFO QUEUE:".green
           puts DSL::_planning.map{ |book|
-            [book.type, book.plan, book.yaml, book.family.map{|g| ":#{g}" }.join(',')]
+            [book.type, book.plan, book.yaml, book.family.map{|g| ":#{g}" }.join(' < ')]
           }.map{ |t,p,y,f|
             unless t == :noop
               ":#{t}".light_yellow
