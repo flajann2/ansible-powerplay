@@ -52,13 +52,15 @@ module Powerplay
       PLAYBOOK = "ansible-playbook"
       OPTS = ""
 
+      # deprecated
       def self.playbooks
         plays = Play::clopts[:play].map{ |y| y.to_sym }
         DSL::_global[:playbooks].each do |pplay, group|
           yield pplay, group if plays.first == :all or plays.member? pplay
         end
       end
-      
+
+      # deprecated
       def self.groups(playbook)
         grps = Play::clopts[:group].map{ |g| g.to_sym}
         playbook.groups.each do |group|
@@ -68,8 +70,8 @@ module Powerplay
 
       def self.run_book(book, bucher, grouppe, book_threads, errors)
         dryrun = Play::clopts[:dryrun]
-        extra = Play::clopts[:extra]
-        tags = Play::clopts[:tags]
+        extra  = Play::clopts[:extra]
+        tags   = Play::clopts[:tags]
         sktags = Play::clopts[:sktags]
         tagstr = ''
         if tags and sktags
@@ -97,7 +99,7 @@ module Powerplay
           book_threads << Thread.new {
             std, status = Open3.capture2e apcmd
             errors << [book.yaml, apcmd, std] unless status.success?
-          } unless dryrun
+          } unless dryrun or book.type == :noop
         end
       end
 
@@ -112,8 +114,10 @@ module Powerplay
 
         # old-style looping, alas
         while DSL::_peek
+          book = DSL::_dequeue
         end
         
+        return
         # old code and will be deleted
         playbooks do |pname, playbook|
           group_threads = []

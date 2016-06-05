@@ -355,13 +355,17 @@ Description:
      two consecutive async groups would appear
      to come from one async group.
 
-**** Implemention of the Execution Planning
+**** Implemention of the Execution Planning [authoritative]
      In actuality, what we do at the DSL processing
      level is decide whether or not a book is a sync
      book or async book. We generate the actual command
      line code at that point, and create a pair [:sync,
      book] or [:async, book] and push that into the
      planning queue, which is a FIFO queue.
+
+     (Note the the following is conceptual. In
+     actuality, the info is all inside the book
+     object.)
 
      | book        | enqueue to FIFO planning_queue |
      |-------------+--------------------------------|

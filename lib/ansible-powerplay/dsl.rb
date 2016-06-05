@@ -110,24 +110,39 @@ module Powerplay
 
     class DslGroup < Dsl
       # The entries here may either be books or groups.
-      attr_reader :exec
+      attr_reader :exec, :parent
 
       def group name, desc = nil, plan = :async, &block
-        DslGroup.new(name, desc, plan, &block)
+        DslGroup.new(name, desc, plan, self, &block)
         _enqueue DslBook.new(:noop, nil, plan: @exec) unless @exec == :async or _sneak.type == :sync
       end
 
       def book(type, yaml, desc: nil, plan: @exec, &block)
         raise ":noop is a reserved book type and cannot be used." if type == :noop
-        _enqueue DslBook.new(type, yaml, desc: desc, plan: plan, &block)
+        _enqueue DslBook.new(type, yaml,
+                             desc: desc,
+                             plan: plan,
+                             group: self, &block)
       end
 
-      def initialize(type, desc, plan, &block)
+      def initialize(type, desc, plan, parent=nil, &block)
         super(type, desc, &block)
         @exec = plan
+        @parent = parent
         _bump
-        instance_eval &block 
+        instance_eval( &block ) 
         @config = _dip
+      end
+
+      # return a list including ourselves and our parents
+      def family
+        fam = []
+        g = self
+        while g
+          fam << g.type
+          g = g.parent
+        end
+        fam
       end
     end
 

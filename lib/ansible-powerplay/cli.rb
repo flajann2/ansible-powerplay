@@ -41,17 +41,29 @@ module Powerplay
         load script, true
 
         if DSL::_verbosity >= 3
-          puts "\n*** PLANNING FIFO QUEUE:"
-          pp DSL::_planning.map{ |book| [book.type, book.plan, book.yaml] }
-
+          puts "\n*** PLANNING FIFO QUEUE:".green
+          puts DSL::_planning.map{ |book| [book.type, book.plan, book.yaml] }
+                .map{ |t,p,y|
+            unless t == :noop
+              ":#{t}".white
+            else
+              ":#{t.to_s}".yellow
+            end +
+              unless p == :async
+                "\t :#{p}".cyan
+              else
+                "\t :#{p}".light_red
+              end +
+              "\t #{y}".magenta
+          }
           puts
         end
 
         if DSL::_verbosity >= 4
-          puts "\n**** PARSE TREE & GLOBAL OBJECTS:"
+          puts "\n**** PARSE TREE & GLOBAL OBJECTS:".green
           pp DSL::_global
           
-          puts "\n**** PLANNING FIFO QUEUE DETAILS:"
+          puts "\n**** PLANNING FIFO QUEUE DETAILS:".green
           pp DSL::_planning
         end
 
