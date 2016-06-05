@@ -68,6 +68,22 @@ playbooks :development do
       group :deep_nest3, "deeply nested group 3", :sync do
         book :ds_nat, "nat.yml"
         book :ds_dat, "dat.yml"
+        
+        # the following represents two
+        # async groups that themselves
+        # should be executed synchronously.
+        group :async_1, "async test" do
+          book :sas1_nat, "nat.yml"
+          book :sas1_dat, "dat.yml"
+        end
+        
+        group :async_2, "async test" do
+          book :sas2_nat, "nat.yml"
+          book :sas2_dat, "dat.yml"
+        end
+        # :async_1 and :async_2 groups
+        # should be executed synchronously,
+        # even though their contents should be async.
       end
     end
 

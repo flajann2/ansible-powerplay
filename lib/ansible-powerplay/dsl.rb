@@ -82,6 +82,7 @@ module Powerplay
       end
     end
 
+    # we do allow for noop books
     class DslBook < Dsl
       attr :yaml, :plan
 
@@ -108,9 +109,11 @@ module Powerplay
 
       def group name, desc = nil, plan = :async, &block
         DslGroup.new(name, desc, plan, &block)
+        _enqueue DslBook.new(:noop, nil, plan: @exec)
       end
 
       def book(type, yaml, desc: nil, plan: @exec, &block)
+        raise ":noop is a reserved book type and cannot be used." if type == :noop
         _enqueue DslBook.new(type, yaml, desc: desc, plan: plan, &block)
       end
 
