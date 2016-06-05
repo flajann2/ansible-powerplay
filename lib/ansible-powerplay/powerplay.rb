@@ -139,23 +139,25 @@ module Powerplay
           j = unless apcmd.nil?
                 Thread.new(book, apcmd) { |bk, cmd|
                   std, status = Open3.capture2e cmd
-                  puts std if status.success?
+                  puts "**** Playbook #{bk.yaml} ****".light_blue, std if status.success?
                   errors << [bk.yaml, cmd, std, status] unless status.success?
                 }
               else
                 nil
               end
           if book.plan == :sync
+            puts "Sync execution of :#{book.type} => #{book.yaml}".light_magenta unless DSL::_verbosity < 2
             j.join unless j.nil?
           elsif book.plan == :async
+            puts "ASync execution of :#{book.type} => #{book.yaml}".magenta unless DSL::_verbosity < 2
             jobs << j unless j.nil?
           else
             raise "Book plan error #{book.plan} for book #{book.type}"
           end
         end
+        
         # finish the lot and report on any errors
         join_jobs
-        
         unless errors.empty?
           errors.each do |yaml, cmd, txt, status|
             puts ('=' * 60).light_red
@@ -165,36 +167,6 @@ module Powerplay
             puts cmd.red
           end
           exit 10
-        end
-        
-        return
-        # old code and will be deleted
-        playbooks do |pname, playbook|
-          group_threads = []
-          puts "PLAYBOOK #{pname} (group=#{Play::clopts[:group]}) -->"
-          groups playbook do |group|
-            tg = nil
-            group_threads << (tg = Thread.new {
-                                puts "    GROUP #{group.type} (book=#{bucher}, cg=#{congroups}) -->"
-                                book_threads = []
-                                errors = []
-                                group.books.each { |book| get_book_apcmd(book, bucher, book_threads, errors) }
-                                book_threads.each{ |t| t.join }
-                                unless errors.empty?
-                                  errors.each do |yaml, cmd, txt|
-                                    puts '=' * 30
-                                    puts ('*' * 10) + ' ' + yaml
-                                    puts txt
-                                    puts '-' * 30
-                                    puts cmd
-                                  end
-                                  exit 10
-                                end
-                              })
-            # Always wait here unless we're concurrent
-            group_threads.join unless congroups
-          end
-          group_threads.each{ |t| t.join }
         end
       end
     end

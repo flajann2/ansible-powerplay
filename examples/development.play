@@ -32,7 +32,7 @@ playbooks :development do
     book :nat, "nat.yml"
     book :dat, "dat.yml"
 
-    book :rabbit, "rabbitmq_cluster.yml" do
+    book :rabbit, "rabbitmq.yml" do
       aws_type "t2.medium"
     end
 
