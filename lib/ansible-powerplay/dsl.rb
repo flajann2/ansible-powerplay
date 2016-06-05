@@ -106,6 +106,14 @@ module Powerplay
           "#{k}=#{v.first}" unless DSL::SPECIAL_PARAMS.member?(k)
         }.compact.join(' ')
       end
+
+      def family
+        unless @group.nil?
+          @group.family
+        else
+          []
+        end
+      end
     end
 
     class DslGroup < Dsl
