@@ -68,7 +68,16 @@ module Powerplay
         end
       end
 
-      def self.run_book(book, bucher, grouppe, book_threads, errors)
+      def self.jobs
+        @jobs ||= []
+      end
+      
+      def self.join_jobs
+        @jobs.each{ |j| j.join }
+        @jobs = []
+      end
+      
+      def self.get_book_apcmd(book, bucher, grouppe)
         dryrun = Play::clopts[:dryrun]
         extra  = Play::clopts[:extra]
         tags   = Play::clopts[:tags]
@@ -82,7 +91,9 @@ module Powerplay
         tagstr += %( --skip-tags "#{sktags}" ) unless sktags.nil?
         tty ||= Tmux.grab_a_tty
         puts " tty == #{tty} (#{Tmux.pane_ttys.last})" unless DSL::_verbosity < 2
-        if bucher.first == :all or bucher.member?(book.type)
+        if (book.type != :noop) and
+          (bucher.first == :all or bucher.member?(book.type)) and
+          (grouppe.first == :all or not (grouppe & book.family).empty?)
           puts "        BOOK #{book.type}"
           inv = if book.config.member? :inventory 
                   "-i #{book.config[:inventory].first}" 
@@ -92,14 +103,18 @@ module Powerplay
           xxv = [extra[book.type], extra[:all]].compact.join(' ')
           apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars "#{book.aparams} #{xxv}" >#{tty}|
           unless DSL::_verbosity < 1
-            puts "==============================\nRunning command:"
-            puts "#{apcmd}".yellow
+            puts "==============================".green
+            puts "Running book ".light_yellow +
+                 ":#{book.type}".light_cyan +
+                 " group heirarchy [".light_yellow +
+                 "#{book.family.map{|g| ':' + g.to_s}.join(' < ')}".light_cyan +
+                 "]".light_yellow
+            puts "\n#{apcmd}".yellow
             puts "------------------------------" 
           end
-          book_threads << Thread.new {
-            std, status = Open3.capture2e apcmd
-            errors << [book.yaml, apcmd, std] unless status.success?
-          } unless dryrun or book.type == :noop
+          dryrun || apcmd
+        else
+          nil
         end
       end
 
@@ -111,10 +126,16 @@ module Powerplay
       def self.power_run
         bucher = Play::clopts[:book].map{ |b| b.to_sym }
         grouppe = Play::clopts[:group].map{ |b| b.to_sym }
+        errors = []
 
         # old-style looping, alas
         while DSL::_peek
           book = DSL::_dequeue
+          apcmd = get_book_apcmd book, bucher, grouppe
+          jobs << Thread.new {
+            std, status = Open3.capture2e apcmd
+            errors << [book.yaml, apcmd, std] unless status.success?
+          }
         end
         
         return
@@ -128,7 +149,7 @@ module Powerplay
                                 puts "    GROUP #{group.type} (book=#{bucher}, cg=#{congroups}) -->"
                                 book_threads = []
                                 errors = []
-                                group.books.each { |book| run_book(book, bucher, book_threads, errors) }
+                                group.books.each { |book| get_book_apcmd(book, bucher, book_threads, errors) }
                                 book_threads.each{ |t| t.join }
                                 unless errors.empty?
                                   errors.each do |yaml, cmd, txt|
