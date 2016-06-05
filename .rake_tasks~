@@ -1,0 +1,17 @@
+build
+clean
+clobber
+console[script]
+gemcutter:release
+gemspec
+gemspec:debug
+gemspec:generate
+gemspec:release
+gemspec:validate
+git:release
+install
+release
+simplecov
+spec
+version
+yard

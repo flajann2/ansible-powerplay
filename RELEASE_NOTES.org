@@ -33,6 +33,7 @@
    we'll remove them from this list.
    |       Date | Issue                      | Description                                                                                                                                              |
    |------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | 2016-06-05 | version                    | Command does not work properly. It hangs.                                                                                                                |
    | 2016-04-07 | --extra-vars               | Powerplay duplicates keys on extra vars if already specified in the Powerplay.                                                                           |
    | 2016-03-11 | Grouping                   | Groups executes in parallel instead of serially.                                                                                                         |
    |            | Core                       | Core process flow needs to be redone.                                                                                                                    |

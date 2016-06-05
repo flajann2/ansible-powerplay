@@ -6,11 +6,13 @@ require 'thread'
 require 'colorize'
 require 'queue_ding'
 
-require_relative 'ansible-powerplay/powerplay'
-require_relative 'ansible-powerplay/dsl'
-
-include QueueDing
-
 def s_version
   SemVer.find.format "v%M.%m.%p%s"
 end
+
+include QueueDing
+
+require_relative 'ansible-powerplay/powerplay'
+require_relative 'ansible-powerplay/dsl'
+require_relative 'ansible-powerplay/cli'
+
