@@ -41,6 +41,10 @@ module Powerplay
     def _peek
       @@planning_queue.first
     end
+    
+    def _sneak
+      @@planning_queue.last
+    end
 
     # do NOT modify this directly. use the API above.
     def _planning
@@ -109,7 +113,7 @@ module Powerplay
 
       def group name, desc = nil, plan = :async, &block
         DslGroup.new(name, desc, plan, &block)
-        _enqueue DslBook.new(:noop, nil, plan: @exec)
+        _enqueue DslBook.new(:noop, nil, plan: @exec) unless @exec == :async or _sneak.type == :sync
       end
 
       def book(type, yaml, desc: nil, plan: @exec, &block)
