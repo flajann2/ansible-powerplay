@@ -347,6 +347,14 @@ Description:
      directly affect the books in its nested
      children.
 
+     To ensure that the groups are themselves
+     executed synchronously if the parent
+     group is synchronous, internally we insert
+     :noop book types to ensure the algorithm
+     behaves itself accordingly. Otherwise,
+     two consecutive async groups would appear
+     to come from one async group.
+
 **** Implemention of the Execution Planning
      In actuality, what we do at the DSL processing
      level is decide whether or not a book is a sync

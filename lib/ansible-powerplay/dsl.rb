@@ -88,12 +88,13 @@ module Powerplay
 
     # we do allow for noop books
     class DslBook < Dsl
-      attr :yaml, :plan
+      attr :yaml, :plan, :group
 
-      def initialize(type, yaml, desc: nil, plan: nil, &block)
+      def initialize(type, yaml, desc: nil, plan: nil, group: nil, &block)
         super(type, desc, &block)
         @yaml = yaml
         @plan = plan
+        @group = group
         _bump
         instance_eval(&block) if block_given?
         @config = _dip

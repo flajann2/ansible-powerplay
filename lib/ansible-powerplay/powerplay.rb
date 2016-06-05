@@ -10,7 +10,6 @@ module Powerplay
     end
 
     module Tmux
-
       def self.current_tty
         %x[tty].chop
       end
@@ -67,7 +66,7 @@ module Powerplay
         end
       end
 
-      def self.run_book(book, bucher, book_threads, errors)
+      def self.run_book(book, bucher, grouppe, book_threads, errors)
         dryrun = Play::clopts[:dryrun]
         extra = Play::clopts[:extra]
         tags = Play::clopts[:tags]
@@ -109,7 +108,13 @@ module Powerplay
       # on how power_run works.
       def self.power_run
         bucher = Play::clopts[:book].map{ |b| b.to_sym }
-        congroups = Play::clopts[:congroups]
+        grouppe = Play::clopts[:group].map{ |b| b.to_sym }
+
+        # old-style looping, alas
+        while DSL::_peek
+        end
+        
+        # old code and will be deleted
         playbooks do |pname, playbook|
           group_threads = []
           puts "PLAYBOOK #{pname} (group=#{Play::clopts[:group]}) -->"
