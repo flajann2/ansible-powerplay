@@ -66,7 +66,7 @@ module Powerplay
         @config[type] = DslConfiguration.new(type, desc, &block).config
       end
 
-      def book(type, yaml, desc: nil, plan: :sync, &block)
+      def book(type, yaml, desc = nil, plan: :sync, &block)
         @books ||= []
         _enqueue DslBook.new(type, yaml, desc: desc, plan: plan, &block)
       end
