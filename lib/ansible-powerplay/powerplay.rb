@@ -84,6 +84,9 @@ module Powerplay
         tags    = Play::clopts[:tags]
         sktags  = Play::clopts[:sktags]
         tmuxout = Play::clopts[:tmux]
+        apverb  = Play::clopts[:apverbose]
+
+        verb = (apverb == 0) ? '' : ('-' + ('v' * apverb))
         tagstr = ''
         if tags and sktags
           puts "Cannot use both --tags (#{tags}) and --skip-tags (#{sktags})"
@@ -104,7 +107,7 @@ module Powerplay
                 end
           xxv = [extra[book.type], extra[:all]].compact.join(' ')
           redirect = (tmuxout.nil?) ? '' : " > #{tty}"
-          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars "#{book.aparams} #{xxv}" #{redirect}|
+          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars "#{book.aparams} #{xxv}" #{verb} #{redirect}|
           unless DSL::_verbosity < 1
             puts "==============================".green
             puts "Running #{book.plan} book ".light_yellow +

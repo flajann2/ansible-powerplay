@@ -6,7 +6,7 @@ include Powerplay::DSL
 module Powerplay
   module Cli
     class Main < Thor
-      class_option :verbose, type: :numeric, banner: '[1|2|3]', aliases: '-v', default: 0
+      class_option :verbose, type: :numeric, banner: '[1|2|3|4]', aliases: '-v', default: 0
 
       desc 'play [script]', 'Run the powerplay script.'
       long_desc <<-LONGDESC
@@ -35,6 +35,8 @@ module Powerplay
       option :sktags,    type: :array,   aliases: ['--skip-tags', '-T'],
                                                         banner: %(<TAG1>[ TAG2 TAG3...]), 
                                                         desc: "Ansible tags to skip - mutually exclusive with --tags"
+      option :apverbose, type: :numeric, banner: '[1|2|3|4]', aliases: '-V', default: 0,
+                                                        desc: "Pass to ansible-playbook -v, -vv, etc. verbosity flags"
       def play(script = 'stack.play')
         DSL::_global[:options] = massage options
         puts "script %s " % [script] if DSL::_global[:options][:verbose] >= 1

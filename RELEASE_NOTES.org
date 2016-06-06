@@ -9,6 +9,9 @@
 ** Release Notes
    | Release | Feature / Bug                          | Description                                                                                   |       Date |
    |---------+----------------------------------------+-----------------------------------------------------------------------------------------------+------------|
+   | v1.0.7  | Verosity Switch --apverbose=n (-Vn)    | Pass to ansible-powerplay -v, -vv, etc.                                                       |            |
+   | v1.0.6  | Ansible Verbosity                      | Pass to Ansi                                                                                  |            |
+   | v1.0.5  | Many bug fixes                         | Critical bugs all fixed.                                                                      |            |
    | v1.0.3  | DSL book                               | changed the named paramer back to the normal one.                                             | 2061-06-08 |
    | v1.0.0  | version                                | Prints version                                                                                | 2061-06-04 |
    |         | powerplay / pp shorthand command       | Play task defaults if you use the shorthand 'pp' on the commandline                           | 2061-06-04 |
