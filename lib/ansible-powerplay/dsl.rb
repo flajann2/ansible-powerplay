@@ -176,7 +176,10 @@ module Powerplay
 
     def playbooks(type=:vars, desc=nil, &block)
       _global[:playbooks] ||= {}
-      _global[:playbooks][type] = DslPlaybook.new type, desc, &block
+      
+      if Play::clopts[:play].member? type.to_s
+        _global[:playbooks][type] = DslPlaybook.new type, desc, &block
+      end
     end
   end
 end
