@@ -125,7 +125,7 @@ module Powerplay
         _enqueue DslBook.new(:noop, nil, plan: @exec) unless @exec == :async or _sneak.type == :sync
       end
 
-      def book(type, yaml, desc: nil, plan: @exec, &block)
+      def book(type, yaml, desc = nil, plan: @exec, &block)
         raise ":noop is a reserved book type and cannot be used." if type == :noop
         _enqueue DslBook.new(type, yaml,
                              desc: desc,
