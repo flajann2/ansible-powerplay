@@ -32,21 +32,24 @@
 
 ** Release Notes
    Please see [[RELEASE_NOTES.org][Release Notes]].
+*** Hilights
+**** DSL
+     The version 1.x releases adds new features to
+     the DSL, most notably, nestable groups, and being
+     able to label each group as :sync or :async.
+**** STDOUT from ansible-playbook
+     The capture of the output from ansible-powerplay is 
+     handled a bit more intelligently. If you do not specify the
+     --tmux (or -m) option, all output is now currently captured
+     by Powerplay and redumped to the console.
 
-   The version 1.x releases have a new DSL
-   which may be slightly incompatable with the older 0.x DSL.
-   There will be a lapse between this release and the
-   documentaiton of the differences.
+     Because you may still want to see the color from
+     ansible-powerplay, you can alter ansible.cfg and 
+     add the following line:
 
-   Also, the capture of the output from ansible-powerplay is 
-   handled a bit more intelligently. If you do not specify the
-   --tmux (or -m) option, all output is now currently captured
-   by powerplay and redumped to the console.
-
-   Because you may still want to see the color from ansible-powerplay,
-   you can alter ansible.cfg and add the following line:
-
-   + force_color = 1
+     + force_color = 1
+     
+     Please see [[New STDOUT capturing with 1.0.x][New STDOUT capturing with 1.0.x]]
 
 ** Features and Cavets
 *** Integration with TMUX
@@ -65,6 +68,13 @@
 
     Your input on this is strongly encouarged. We will
     not be supporting Screen at all. Sorry.
+
+*** New STDOUT capturing with 1.0.x
+    The new capture, while properly capturing the STDOUT
+    of concurrent async runs, does not display until
+    ansible-playbook completes. If you are like me, you'll
+    like to see the progress as it runs. You still can using
+    tmux with the --tmux (-m) option.
 
 ** DSL Terminology & Documentation
    Note that this is the DSL for version 1.x of

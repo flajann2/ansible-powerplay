@@ -35,24 +35,25 @@
 ** Known Outstanding Issues
    Bugs and missing features that needs to be addressed. As they are,
    we'll remove them from this list.
-   |       Date | Issue                      | Description                                                                                                                                              |
-   |------------+----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------|
-   | 2016-06-05 | version                    | Command does not work properly. It hangs.                                                                                                                |
-   | 2016-04-07 | --extra-vars               | Powerplay duplicates keys on extra vars if already specified in the Powerplay.                                                                           |
-   | 2016-03-11 | Grouping                   | Groups executes in parallel instead of serially.                                                                                                         |
-   |            | Core                       | Core process flow needs to be redone.                                                                                                                    |
-   | 2016-03-03 | Status dump out of order   | Currently a bit out of order due to the fact that the output are being run in different threads and so the text is being printed nondeterministically.   |
-   | 2016-02-20 | Platforms other than Linux | We need to test on Mac OSX and Windows. Should work fine on Macs. I do not plan to support Windows in general, but may accept pull requests to that end. |
+
+   |       Date | Issue                                | Description                                                                                                                                              |
+   |------------+--------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | 2016-06-07 | execution planning dump (-v2) and -b | When using -b to select an individual book, the execution planning does not reflect this filtration.                                                     |
+   | 2016-06-05 | version                              | Command does not work properly. It hangs.                                                                                                                |
+   | 2016-04-07 | --extra-vars                         | Powerplay duplicates keys on extra vars if already specified in the Powerplay.                                                                           |
+   | 2016-03-11 | Grouping                             | Groups executes in parallel instead of serially.                                                                                                         |
+   |            | Core                                 | Core process flow needs to be redone.                                                                                                                    |
+   | 2016-03-03 | Status dump out of order             | Currently a bit out of order due to the fact that the output are being run in different threads and so the text is being printed nondeterministically.   |
+   | 2016-02-20 | Platforms other than Linux           | We need to test on Mac OSX and Windows. Should work fine on Macs. I do not plan to support Windows in general, but may accept pull requests to that end. |
 
 ** Wish List
    Well, we can always wish upon a star... but it will take
    my time and dedication to make stars happen. :p
 
-   |       Date | Wish                          | Description                                                                                                                                                                   |   |
-   |------------+-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---|
-   | 2016-06-04 | Verbosity to ansible-playbook | Being able to pass in the -v flag to ansible. From pp, a -v2, for example, would be the equivalent of -vv to ansible-playbook.                                                |   |
-   | 2016-02-20 | Integration with Jenkins      | I have no idea what form this will take                                                                                                                                       |   |
-   |            | Curses integration            | Basically, the tmux integration is used because it was quick to do. But what I really want to do is full Curses support, similar with what you see with htop and other tools. |   |
-   | 2016-02-26 | Better and Error handling     | When there's a failure in the underlying Ansible playbook, we want to handle that better in Powerplay. This would be a part of the Curses upgrade to come later.              |   |
-   | 2016-02-29 | Configuration file            | Add a (presumably yaml format) configuration file in a few key locations.                                                                                                     |   |
-   |            | Name Completion               | Shell integration with name completion features of bash.                                                                                                                      |   |
+   |       Date | Wish                      | Description                                                                                                                                                                   |
+   |------------+---------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | 2016-02-20 | Integration with Jenkins  | I have no idea what form this will take                                                                                                                                       |
+   |            | Curses integration        | Basically, the tmux integration is used because it was quick to do. But what I really want to do is full Curses support, similar with what you see with htop and other tools. |
+   | 2016-02-26 | Better and Error handling | When there's a failure in the underlying Ansible playbook, we want to handle that better in Powerplay. This would be a part of the Curses upgrade to come later.              |
+   | 2016-02-29 | Configuration file        | Add a (presumably yaml format) configuration file in a few key locations.                                                                                                     |
+   |            | Name Completion           | Shell integration with name completion features of bash.                                                                                                                      |
