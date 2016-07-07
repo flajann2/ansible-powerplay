@@ -9,12 +9,13 @@
 ** Release Notes
    | Release | Feature / Bug                          | Description                                                                                   |       Date |
    |---------+----------------------------------------+-----------------------------------------------------------------------------------------------+------------|
+   | v1.0.8  | --ttys                                 | List specific terminals you'd like the output to go to.                                       | 2016-07-07 |
    | v1.0.7  | Verosity Switch --apverbose=n (-Vn)    | Pass to ansible-powerplay -v, -vv, etc.                                                       |            |
    | v1.0.6  | Ansible Verbosity                      | Pass to Ansi                                                                                  |            |
    | v1.0.5  | Many bug fixes                         | Critical bugs all fixed.                                                                      |            |
-   | v1.0.3  | DSL book                               | changed the named paramer back to the normal one.                                             | 2061-06-08 |
-   | v1.0.0  | version                                | Prints version                                                                                | 2061-06-04 |
-   |         | powerplay / pp shorthand command       | Play task defaults if you use the shorthand 'pp' on the commandline                           | 2061-06-04 |
+   | v1.0.3  | DSL book                               | changed the named paramer back to the normal one.                                             | 2016-06-08 |
+   | v1.0.0  | version                                | Prints version                                                                                | 2016-06-04 |
+   |         | powerplay / pp shorthand command       | Play task defaults if you use the shorthand 'pp' on the commandline                           | 2016-06-04 |
    |         | DSL incompatible changes               | Nestable groups, naked books. older DSL not gauranteed to be compatable.                      |            |
    |         | Internal rewrite of the execution flow | Logic for execution flow rewritten to allow fine-grained control over what is sync and async. |            |
    |         | Internal NOOP books                    | We need to demarcate groups executing synchronously that they themselves have async members.  |            |

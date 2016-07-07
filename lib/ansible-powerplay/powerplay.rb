@@ -23,7 +23,9 @@ module Powerplay
                   else
                     " -t #{Play::clopts[:tmux]} "
                   end
-        @ptys ||= if Play::clopts.nil? or Play::clopts[:tmux]
+        @ptys ||= if Play::clopts[:ttys]
+                    Play::clopts[:ttys]
+                  elsif Play::clopts.nil? or Play::clopts[:tmux]
                     %x[tmux list-panes #{@window} -F '\#{pane_tty},']
                       .inspect
                       .chop

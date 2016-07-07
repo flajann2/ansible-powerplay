@@ -19,6 +19,8 @@ module Powerplay
       LONGDESC
       option :tmux,      type: :numeric, aliases: '-m', banner: "[WINDOWNUMBERopt]", lazy_default: 0,
                                                         desc: ' Send output to all tmux panes in the current window, or the numeric window specified.'
+      option :ttys,      type: :array,   aliases: '-M', banner: "[TTY1[ TTY2 ...]]",
+                                                        desc: ' Send output to specified (pseudo) ttys.'
       option :play,      type: :array,   aliases: ['-p', '--power'], banner: "[NAME[ NAME2...]|all]", required: true,
                                                         desc: 'Which PowerPlay playbooks (as opposed to Ansible playbooks) to specifically execute.'
       option :group,     type: :array,   aliases: '-g', banner: "[NAME[ NAME2...]|all]", default: [:all],
