@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Fred Mitchell"]
-  s.date = "2016-07-07"
+  s.date = "2016-08-07"
   s.description = "Ansible Powerplay, by way of its DSL, allows you to\n                       specify your Ansible playbooks and their vars, and common\n                       vars to all, so that you can run your\n                       indeoendent playbooks in full parallel."
   s.email = "fred.mitchell@gmx.de"
   s.executables = ["powerplay", "pp"]
