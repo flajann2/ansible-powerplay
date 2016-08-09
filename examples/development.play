@@ -20,7 +20,7 @@ playbooks :development do
   book :second, "second.yml"
 
   # Groups' books are asynchronous by default.
-  group :first, "our very first asynchronous group" do
+  group :first, "async group with sequencing", seq: { iter: [1, 5, 9, :dodo] } do
     # Books within a group are executed asynchronously,
     # and therefore must be independent of each other.
     book :nat, "nat.yml"

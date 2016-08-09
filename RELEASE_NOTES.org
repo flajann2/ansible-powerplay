@@ -9,6 +9,7 @@
 ** Release Notes
    | Release | Feature / Bug                          | Description                                                                                   |       Date |
    |---------+----------------------------------------+-----------------------------------------------------------------------------------------------+------------|
+   | v1.1.0  | Group sequencing                       | Allows you to run a group multiple times with sequence numbers.                               | 2016-08-09 |
    | v1.0.8  | --ttys                                 | List specific terminals you'd like the output to go to.                                       | 2016-07-07 |
    | v1.0.7  | Verosity Switch --apverbose=n (-Vn)    | Pass to ansible-powerplay -v, -vv, etc.                                                       |            |
    | v1.0.6  | Ansible Verbosity                      | Pass to Ansi                                                                                  |            |
@@ -46,6 +47,7 @@
    |            | Core                                 | Core process flow needs to be redone.                                                                                                                    |
    | 2016-03-03 | Status dump out of order             | Currently a bit out of order due to the fact that the output are being run in different threads and so the text is being printed nondeterministically.   |
    | 2016-02-20 | Platforms other than Linux           | We need to test on Mac OSX and Windows. Should work fine on Macs. I do not plan to support Windows in general, but may accept pull requests to that end. |
+   |            |                                      |                                                                                                                                                          |
 
 ** Wish List
    Well, we can always wish upon a star... but it will take

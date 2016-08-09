@@ -5,6 +5,7 @@ require 'open3'
 require 'thread'
 require 'colorize'
 require 'queue_ding'
+require 'awesome_print'
 
 def s_version
   SemVer.find.format "v%M.%m.%p%s"

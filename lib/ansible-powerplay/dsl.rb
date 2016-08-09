@@ -120,9 +120,21 @@ module Powerplay
       # The entries here may either be books or groups.
       attr_reader :exec, :parent
 
-      def group name, desc = nil, plan = :async, &block
-        DslGroup.new(name, desc, plan, self, &block)
-        _enqueue DslBook.new(:noop, nil, plan: @exec) unless @exec == :async or _sneak.type == :sync
+      def group name, desc = nil, plan = :async, seq: nil, &block
+        if seq.nil?
+          DslGroup.new(name, desc, plan, self, &block)
+          _enqueue DslBook.new(:noop, nil, plan: @exec) unless @exec == :async or _sneak.type == :sync
+        else
+          seq.each do |var, list|
+            list.each do |value|
+              _bump
+              _config[var] = [value]
+              DslGroup.new(name, desc, plan, self, &block)
+              _enqueue DslBook.new(:noop, nil, plan: @exec) unless @exec == :async or _sneak.type == :sync
+              _dip
+            end
+          end
+        end
       end
 
       def book(type, yaml, desc = nil, plan: @exec, &block)

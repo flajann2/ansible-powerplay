@@ -51,6 +51,69 @@
      
      Please see [[New STDOUT capturing with 1.0.x][New STDOUT capturing with 1.0.x]]
 
+**** Group Sequence Numers
+     We now allow groups to have sequence numbers, as
+     of 1.1. Basically, if you specify a sequence,
+     the variable you designate will be assigned 
+     a value in each of the sequence, with the
+     group re-excuted. for example:
+
+     #+begin_src ruby
+     group :first, "async group with sequencing",
+                 seq: { iter: [1, 5, 9, :dodo] } do
+       book :nat, "nat.yml"
+       book :dat, "dat.yml"
+       book :rat, "rat.yml"
+     end     
+     #+end_src
+
+     as you can see (in the development.play sample)
+     the variable "iter" will be successively assigned
+     the element in the [] array, with the underlying
+     playbooks called. The is the function equivalent
+     of the following:
+
+     #+begin_src ruby
+     group :first, "async group without sequencing" do
+       configuration do
+         iter 1
+       end
+       book :nat, "nat.yml"
+       book :dat, "dat.yml"
+       book :rat, "rat.yml"
+     end
+
+     group :first, "async group without sequencing" do
+       configuration do
+         iter 5
+       end
+       book :nat, "nat.yml"
+       book :dat, "dat.yml"
+       book :rat, "rat.yml"
+     end     
+
+     group :first, "async group without sequencing" do
+       configuration do
+         iter 9
+       end
+       book :nat, "nat.yml"
+       book :dat, "dat.yml"
+       book :rat, "rat.yml"
+     end
+
+     group :first, "async group without sequencing" do
+       configuration do
+         iter :dodo
+       end
+       book :nat, "nat.yml"
+       book :dat, "dat.yml"
+       book :rat, "rat.yml"
+     end     
+     #+end_src
+
+     As you can see, the new sequencing can be quite 
+     succinct.
+
 ** Features and Cavets
 *** Integration with TMUX
     When running multiple Ansible Playbooks
