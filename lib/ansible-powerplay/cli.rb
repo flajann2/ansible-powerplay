@@ -25,9 +25,13 @@ window specified. Additionally, you can precisely specify pane numbers,
 as is shown by the "<tmux-key> q" command.
 
 Examples:
+ -m      -- will send the output to "random" panes of the current TMUX
+            window.
  -m2     -- will send the output to the TMUX window two, and "randomly" 
-            select panes for the output
- -m2:2,3 -- will send the outputs to only panes 2 and 3 of TMUX window 2
+            select panes for the output.
+ -m2:2,3 -- will send the outputs to only panes 2 and 3 of TMUX window 2.
+ -m0:1,4 -- will send the outputs to only panes 1 and 4 of the current
+            TMUX window. '0' always mean 'current TMUX window'.
 
 LONGDESC
       
