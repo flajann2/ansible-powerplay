@@ -550,3 +550,15 @@ Description:
           group_threads.each{ |t| t.join }
         end
     #+end_src
+*** Old tmux option parsing functional
+    #+begin_src ruby
+      .inspect
+      .chop
+      .split(",")
+      .map{ |s| s.strip.sub(/\\n|\"/, '') }
+      .reject{ |pty| pty == %x(tty).chop }
+      .reject{ |pty| pty == '' }
+    #+end_src
+
+
+

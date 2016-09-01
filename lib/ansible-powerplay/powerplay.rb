@@ -14,27 +14,44 @@ module Powerplay
         %x[tty].chop
       end
 
+      # Either this list is empty, or a list
+      # of window indices that was passed in from command-line.
+      def self.list_of_pane_indices
+        @splt ||= Play::clopts[:tmux].split(':')[0]
+        @lst ||= unless @splt.nil?
+                   @splt
+                     .split(',')
+                     .map{ |n| n.to_i }
+                 else
+                   []
+                 end
+      end
+      
       # Get a list of the ptys
       # Note that this code is a bit innefficient, but will only be
       # executed once in the loop.
       def self.pane_ttys
-        @window = if Play::clopts.nil? or Play::clopts[:tmux] == 0
-                    ''
+        @window = if Play::clopts.nil? or Play::clopts[:tmux].split(':').first.to_i == 0
+                    {nur: ''}
                   else
-                    " -t #{Play::clopts[:tmux]} "
+                    {nur: " -t #{Play::clopts[:tmux]} "}
                   end
         @ptys ||= if Play::clopts[:ttys]
                     Play::clopts[:ttys]
                   elsif Play::clopts.nil? or Play::clopts[:tmux]
-                    %x[tmux list-panes #{@window} -F '\#{pane_tty},']
+                    %x[tmux list-panes #{@window} -F '\#{pane_index}:\#{pane_tty},']
                       .inspect
                       .chop
-                      .split(",")
-                      .map{ |s| s.strip.sub(/\\n|\"/, '') }
-                      .reject{ |pty| pty == %x(tty).chop }
+                      .split(',')
+                      .map{ |s| s.strip.sub(/\\n|\"/, '')}
                       .reject{ |pty| pty == '' }
+                      .map{|s| s.split(':')}
+                      .reject{ |idx,pty| pty == '' }
+                      .map{|i,t|[i.to_i, t]}
+                      .reject{|i,pty| not (list_of_pane_indices.empty? or list_of_pane_indices.member?(i)) }
+                      .to_h
                   else
-                    [current_tty]
+                    {nur: current_tty}
                   end
       end
       
@@ -44,7 +61,7 @@ module Powerplay
         CRITICAL.synchronize {
           @@tty_count ||= -1
           @@tty_count = (@@tty_count+1) % pane_ttys.size
-          tty = pane_ttys[@@tty_count] 
+          tty = pane_ttys.values.[@@tty_count]
         }
         tty
       end
