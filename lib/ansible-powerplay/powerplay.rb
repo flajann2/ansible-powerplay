@@ -85,7 +85,7 @@ module Powerplay
         extra   = Play::clopts[:extra]
         tags    = Play::clopts[:tags]
         sktags  = Play::clopts[:sktags]
-        tmuxout = Play::clopts[:tmux]
+        tmuxout, tmuxpanes = Play::clopts[:tmux]
         apverb  = Play::clopts[:apverbose]
 
         verb = (apverb == 0) ? '' : ('-' + ('v' * apverb))

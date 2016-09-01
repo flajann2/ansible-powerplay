@@ -17,8 +17,20 @@ module Powerplay
         if [script] is not given, it defaults to 'stack.play'
         in the current directory.
       LONGDESC
-      option :tmux,      type: :numeric, aliases: '-m', banner: "[WINDOWNUMBERopt]", lazy_default: 0,
-                                                        desc: ' Send output to all tmux panes in the current window, or the numeric window specified.'
+      option :tmux,      type: :string, aliases: '-m',  banner: "[WINDOWNUMBERopt[:PANENUMBER[,PANENUMBER...]]]", lazy_default: "0",
+                                                        desc: <<-LONGDESC
+
+Send output to all tmux panes in the current window, or the numeric
+window specified. Additionally, you can precisely specify pane numbers,
+as is shown by the "<tmux-key> q" command.
+
+Examples:
+ -m2     -- will send the output to the TMUX window two, and "randomly" 
+            select panes for the output
+ -m2:2,3 -- will send the outputs to only panes 2 and 3 of TMUX window 2
+
+LONGDESC
+      
       option :ttys,      type: :array,   aliases: '-M', banner: "[TTY1[ TTY2 ...]]",
                                                         desc: ' Send output to specified (pseudo) ttys.'
       option :play,      type: :array,   aliases: ['-p', '--power'], banner: "[NAME[ NAME2...]|all]", required: true,
