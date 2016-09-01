@@ -17,9 +17,9 @@ module Powerplay
       # Either this list is empty, or a list
       # of window indices that was passed in from command-line.
       def self.list_of_pane_indices
-        @splt ||= Play::clopts[:tmux].split(':')[0]
-        @lst ||= unless @splt.nil?
-                   @splt
+        @slst ||= Play::clopts[:tmux].split(':')[1]
+        @lst ||= unless @slst.nil?
+                   @slst
                      .split(',')
                      .map{ |n| n.to_i }
                  else
@@ -32,9 +32,9 @@ module Powerplay
       # executed once in the loop.
       def self.pane_ttys
         @window = if Play::clopts.nil? or Play::clopts[:tmux].split(':').first.to_i == 0
-                    {nur: ''}
+                    ''
                   else
-                    {nur: " -t #{Play::clopts[:tmux]} "}
+                    " -t #{Play::clopts[:tmux].split(':').first} "
                   end
         @ptys ||= if Play::clopts[:ttys]
                     Play::clopts[:ttys]
@@ -43,16 +43,16 @@ module Powerplay
                       .inspect
                       .chop
                       .split(',')
-                      .map{ |s| s.strip.sub(/\\n|\"/, '')}
+                      .map{ |s| s.strip.sub(/\\n|\"/, '') }
                       .reject{ |pty| pty == '' }
-                      .map{|s| s.split(':')}
+                      .map{ |s| s.split(':') }
                       .reject{ |idx,pty| pty == '' }
-                      .map{|i,t|[i.to_i, t]}
-                      .reject{|i,pty| not (list_of_pane_indices.empty? or list_of_pane_indices.member?(i)) }
+                      .map{ |i,t| [i.to_i, t] }
+                      .reject{ |i,pty| not (list_of_pane_indices.empty? or list_of_pane_indices.member?(i)) }
                       .to_h
                   else
                     {nur: current_tty}
-                  end
+                  end        
       end
       
       # thread-safe way to grab a new tty
@@ -61,7 +61,7 @@ module Powerplay
         CRITICAL.synchronize {
           @@tty_count ||= -1
           @@tty_count = (@@tty_count+1) % pane_ttys.size
-          tty = pane_ttys.values.[@@tty_count]
+          tty = pane_ttys.values[@@tty_count]
         }
         tty
       end
@@ -114,7 +114,7 @@ module Powerplay
         tagstr += %( --tags "#{tags}" ) unless tags.nil?
         tagstr += %( --skip-tags "#{sktags}" ) unless sktags.nil?
         tty ||= Tmux.grab_a_tty
-        puts " tty == #{tty} (#{Tmux.pane_ttys.last})" unless DSL::_verbosity < 2
+        puts " tty == #{tty} (#{Tmux.pane_ttys.values.last})" unless DSL::_verbosity < 2
         if (book.type != :noop) and
           (bucher.first == :all or bucher.member?(book.type)) and
           (grouppe.first == :all or not (grouppe & book.family).empty?)

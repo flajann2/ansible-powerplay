@@ -26,13 +26,16 @@ as are shown by the "<tmux-key> q" command (or whatever you may have
 mapped it to.
 
 Examples:
- -m      -- will send the output to "random" panes of the current TMUX
-            window.
- -m2     -- will send the output to the TMUX window two, and "randomly" 
-            select panes for the output.
- -m2:2,3 -- will send the outputs to only pane indices 2 and 3 of TMUX window 2.
- -m0:1,4 -- will send the outputs to only pane indices 1 and 4 of the current
-            TMUX window. '0' always mean 'current TMUX window'.
+ -m       -- will send the output to "random" panes of the current TMUX
+             window.
+ -m=2     -- will send the output to the TMUX window two, and "randomly" 
+             select panes for the output.
+ -m=2:2,3 -- will send the outputs to only pane indices 2 and 3 of TMUX window 2.
+ -m=0:1,4 -- will send the outputs to only pane indices 1 and 4 of the current
+             TMUX window. '0' always mean 'current TMUX window'.
+
+Note that you will need to use the '=' now, when you specify windows and panes.
+It will not work properly without it.
 
 LONGDESC
       
