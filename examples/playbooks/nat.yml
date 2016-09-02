@@ -9,7 +9,7 @@
           - { 00 : nat, 01 : hello, 02 : world }
     - name: test fact and passed in variables
       debug:
-        msg: "NAT test {{nat}} stack {{stack}} AWS instance type {{aws_type}} AWS disk size {{aws_disk_size}}"
+        msg: "iter {{iter | default('Not Defined')}} NAT test {{nat}} stack {{stack}} AWS instance type {{aws_type}} AWS disk size {{aws_disk_size}}"
     - name: wait 5 seconds
       pause:
         seconds: 5

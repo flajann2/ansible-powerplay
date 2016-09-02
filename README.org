@@ -139,6 +139,32 @@
     like to see the progress as it runs. You still can using
     tmux with the --tmux (-m) option.
 
+*** New TMUX Pane indexing with 1.3.0
+    You can now explicity provide a list of pane indicies with your -m command.
+    for example, if you want to output to panes 2 and 3 on window 2,
+    you would do it thusly:
+
+      -m=2:2,3
+
+    Note that the '=' is now required for the use of -m if there is no intervening
+    spaces. This might break some Bash scripting, so please be aware of this.
+
+    You can easily see your pane's indices for any TMUX window by doing
+    the "<TMUX key> q" sequence (or whowever you have that functionality mapped).
+
+*** New Sequencing with 1.4.x
+    We already had sequencing, but now we will allow you
+    to use a predefined sequence in the configuration section.
+    This will allow you to make proper lists of resources in your
+    Ansible playbooks of resources created by sequencing in another
+    playbook.
+
+    Please see [[examples/development.play][development.play]] for an example.
+
+    The "predefined list" can only currently be used in the context of sequencing.
+    Later on, we wish to make this more general. But Ruby underlies the DSL, so you
+    can accomplish quite a bit already with just a little Ruby added!
+
 ** DSL Terminology & Documentation
    Note that this is the DSL for version 1.x of
    PowerPlay. For 0.x, please see those tags in
@@ -559,6 +585,4 @@ Description:
       .reject{ |pty| pty == %x(tty).chop }
       .reject{ |pty| pty == '' }
     #+end_src
-
-
 

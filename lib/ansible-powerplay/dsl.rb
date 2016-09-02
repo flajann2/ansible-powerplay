@@ -139,7 +139,11 @@ module Powerplay
           _enqueue DslBook.new(:noop, nil, plan: @exec) unless @exec == :async or _sneak.type == :sync
         else
           seq.each do |var, list|
-            list.each do |value|
+            unless list.is_a? Array
+              config[:vars][list].first
+            else
+              list
+            end.each do |value|
               _bump
               _config[var] = [value]
               DslGroup.new(name, desc, plan, self, &block)

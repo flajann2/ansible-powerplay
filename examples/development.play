@@ -12,6 +12,7 @@ playbooks :development do
     servers 1
     rolling 3
     aws_disk_size 20
+    predefined_list_of_stuff [1, 2, 3, :apple, :orange, :tangerine]
   end
 
   # These are 'naked# books, which shall be treated
@@ -28,6 +29,13 @@ playbooks :development do
     book :rat, "rat.yml"
   end
 
+  # An example where the sequence is predefined
+  group :another_first, "async group with sequencing", seq: { iter: :predefined_list_of_stuff } do
+    # Books within a group are executed asynchronously,
+    # and therefore must be independent of each other.
+    book :seqex, "seq-example.yml"
+  end
+  
   group :second, "our second group", :sync do
     book :nat, "nat.yml"
     book :dat, "dat.yml"
