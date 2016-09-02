@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
     "examples/playbooks/rabbitmq.yml",
     "examples/playbooks/rat.yml",
     "examples/playbooks/second.yml",
+    "examples/playbooks/seq-example.yml",
     "lib/ansible-powerplay.rb",
     "lib/ansible-powerplay/cli.rb",
     "lib/ansible-powerplay/dsl.rb",
