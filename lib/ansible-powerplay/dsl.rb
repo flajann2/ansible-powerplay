@@ -86,7 +86,7 @@ module Powerplay
       end
     end
 
-    # we do allow for noop books
+    # We do allow for noop books
     class DslBook < Dsl
       attr :yaml, :plan, :group
 
@@ -100,11 +100,24 @@ module Powerplay
         @config = _dip
       end
 
-      # Ansible playbook parameters
-      def aparams
-        config.map{ |k,v|          
-          "#{k}=#{v.first}" unless DSL::SPECIAL_PARAMS.member?(k)
-        }.compact.join(' ')
+      # Ansible playbook parameters.
+      # Additional is a string of key=value pairs that is appended.
+      # In the case of JSON output, it is appended in the JSON structure.
+      def aparams(additional = '')
+        unless Play.clopts[:nojson]
+          config
+            .map{ |k, v| [k, v.first] }
+            .to_h
+            .reject{ |k, v| DSL::SPECIAL_PARAMS.member?(k) }
+            .merge(additional
+                    .split
+                    .map{|s| s.split('=')}.to_h)
+            .to_json
+        else
+          config.map{ |k,v|          
+            "#{k}=#{v.first}" unless DSL::SPECIAL_PARAMS.member?(k)
+          }.compact.join(' ') + ' ' + additional
+        end
       end
 
       def family

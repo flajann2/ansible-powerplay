@@ -6,6 +6,7 @@ require 'thread'
 require 'colorize'
 require 'queue_ding'
 require 'awesome_print'
+require 'json'
 
 def s_version
   SemVer.find.format "v%M.%m.%p%s"

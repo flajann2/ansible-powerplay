@@ -120,13 +120,13 @@ module Powerplay
           (grouppe.first == :all or not (grouppe & book.family).empty?)
           puts "        BOOK #{book.type}"
           inv = if book.config.member? :inventory 
-                  "-i #{book.config[:inventory].first}" 
+                  "-i #{book.config[:inventory].first}"
                 else
                   ''
                 end
-          xxv = [extra[book.type], extra[:all]].compact.join(' ')
+          xxv = [extra[book.type], extra[:all]].compact.join(' ') # a=b c=d ...
           redirect = (tmuxout.nil?) ? '' : " > #{tty}"
-          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars "#{book.aparams} #{xxv}" #{verb} #{redirect}|
+          apcmd = %|#{PLAYBOOK} #{OPTS} #{inv} #{book.config[:playbook_directory].first}/#{book.yaml} #{tagstr} --extra-vars '#{book.aparams(xxv)}' #{verb} #{redirect}|
           unless DSL::_verbosity < 1
             puts "==============================".green
             puts "Running #{book.plan} book ".light_yellow +
