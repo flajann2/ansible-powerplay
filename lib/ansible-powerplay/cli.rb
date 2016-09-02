@@ -59,6 +59,9 @@ LONGDESC
                                                         desc: "Ansible tags to skip - mutually exclusive with --tags"
       option :apverbose, type: :numeric, banner: '[1|2|3|4]', aliases: '-V', default: 0,
                                                         desc: "Pass to ansible-playbook -v, -vv, etc. verbosity flags"
+      option :nojson,    type: :boolean, aliases: ['--no-json', '-J'],
+             desc: "Submit --extra-vars as key-value pairs (old behavior), rather than JSON. Will affect new features in 1.4.0 and beyond.",
+             default: false
       def play(script = 'stack.play')
         DSL::_global[:options] = massage options
         puts "script %s " % [script] if DSL::_global[:options][:verbose] >= 1
