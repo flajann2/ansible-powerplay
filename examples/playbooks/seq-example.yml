@@ -1,0 +1,15 @@
+---
+- hosts: local
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: setting a fact
+      set_fact:
+        nat:
+          - { 00 : nat, 01 : hello, 02 : world }
+    - name: test fact and passed in variables
+      debug:
+        msg: "Seq iteration {{iter}} from a list of {{predefined_list_of_stuff}}"
+    - name: wait 5 seconds
+      pause:
+        seconds: 5
