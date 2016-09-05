@@ -22,6 +22,12 @@ module Powerplay
       @@config_stack.last
     end
 
+    # This can be called from the powerplay, but we advise
+    # against it.
+    def config_var(var)
+      _config[var.to_sym].first
+    end
+    
     def _global
       @@global_config
     end
@@ -55,7 +61,11 @@ module Powerplay
       attr :config, :type, :desc
 
       def method_missing(name, *args, &block)
-        DSL::_config[name] = args
+        unless args.first.is_a? Proc
+          DSL::_config[name] = args
+        else
+          DSL::_config[name] = [args.first.()]
+        end
       end
 
       def respond_to?(name, include_private = false)
