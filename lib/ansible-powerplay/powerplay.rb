@@ -31,7 +31,7 @@ module Powerplay
       # Note that this code is a bit innefficient, but will only be
       # executed once in the loop.
       def self.pane_ttys
-        @window = if Play::clopts.nil? or Play::clopts[:tmux].split(':').first.to_i == 0
+        @window = if Play::clopts.nil? or Play::clopts[:tmux].nil? or Play::clopts[:tmux].split(':').first.to_i == 0
                     ''
                   else
                     " -t #{Play::clopts[:tmux].split(':').first} "

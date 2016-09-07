@@ -9,6 +9,7 @@
 ** Release Notes
    | Release | Feature / Bug                                   | Description                                                                                                                                    |       Date |
    |---------+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+------------|
+   | v1.4.2  | Crashes with the -b option                      | Simple bug fix here                                                                                                                            | 2016-09-07 |
    | v1.4.1  | Dsl.config_var, lambda                          | A means to extract the current config variables in the powerplay, as well as a means to do lambdas. Not recommended for use yet.               | 2016-09-05 |
    | v1.4.0  | --extra-vars passed as JSON, config referencing | We now convert the variables to JSON before passing to --extra-vars, and also now allow you to reference the config variables in the squence.  | 2016-09-02 |
    |         |                                                 | Know that the -m parameter, since it is a bit more general, now requires you to put in an '=' if the string is adjacent to the -m, e.g. -m=0:2 |            |
