@@ -17,4 +17,3 @@ include QueueDing
 require_relative 'ansible-powerplay/powerplay'
 require_relative 'ansible-powerplay/dsl'
 require_relative 'ansible-powerplay/cli'
-
