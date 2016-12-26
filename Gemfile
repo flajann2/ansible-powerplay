@@ -7,9 +7,10 @@ gem 'semver',               '~> 1'
 gem 'queue_ding',           '~> 0'
 gem 'concurrent-ruby',      '~> 1', require: 'concurrent'
 gem 'awesome_print',        '~> 1'
+gem "json",                 "~> 2.0", ">= 2.0.2"
 
 group :development do
-  gem 'rspec',              '~> 2'
+  gem 'rspec',              '~> 3'
   gem 'yard',               '~> 0'
   gem 'rdoc',               '~> 3'
   gem 'bundler',            '~> 1'
