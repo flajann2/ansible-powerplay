@@ -4,15 +4,59 @@
    as it is not gauranteed to make sense to you
    or to be kept up to date.
 
+** The Junkyard
+   This area should be ignored, just a place
+   for me to keep old snippets of code and other
+   notes that will be of relevance to no one else.
+*** Old execution planning model
+    #+begin_src ruby
+    # old code and will be deleted
+    playbooks do |pname, playbook|
+      group_threads = []
+          puts "PLAYBOOK #{pname} (group=#{Play::clopts[:group]}) -->"
+          groups playbook do |group|
+            tg = nil
+            group_threads << (tg = Thread.new {
+                                puts "    GROUP #{group.type} (book=#{bucher}, cg=#{congroups}) -->"
+                                book_threads = []
+                                errors = []
+                                group.books.each { |book| get_book_apcmd(book, bucher, book_threads, errors) }
+                                book_threads.each{ |t| t.join }
+                                unless errors.empty?
+                                  errors.each do |yaml, cmd, txt|
+                                    puts '=' * 30
+                                    puts ('*' * 10) + ' ' + yaml
+                                    puts txt
+                                    puts '-' * 30
+                                    puts cmd
+                                  end
+                                  exit 10
+                                end
+                              })
+            # Always wait here unless we're concurrent
+            group_threads.join unless congroups
+          end
+          group_threads.each{ |t| t.join }
+        end
+    #+end_src
+*** Old tmux option parsing functional
+    #+begin_src ruby
+      .inspect
+      .chop
+      .split(",")
+      .map{ |s| s.strip.sub(/\\n|\"/, '') }
+      .reject{ |pty| pty == %x(tty).chop }
+      .reject{ |pty| pty == '' }
+    #+end_src
+
 ** Tmux commnad to return the ptys and other info
     #+BEGIN_SRC bash
     tmux list-panes -F '#{pane_id} #{pane_tty}'
     tmux list-panes -F '#{pane_id} #{pane_tty} #{pane_right} #{pane_left} #{pane_top} #{pane_bottom}'
     #+END_SRC
-    
+
 ** PowerPlay command for testing
    #+BEGIN_SRC bash
    cd examples/
    ../bin/powerplay play -p development -v1 -u
    #+END_SRC
- 

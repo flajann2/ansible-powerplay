@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
     "Gemfile.lock",
     "LICENSE.txt",
     "README.org",
-    "RELEASE_NOTES.org",
     "Rakefile",
     "SCRATCHPAD.org",
     "ansible-powerplay.gemspec",
