@@ -1,5 +1,39 @@
-* Ansible Powerplay
+* Ansible Powerplay                                                :TOC_5_gh:
+  - [[#synopsis][Synopsis]]
+  - [[#release-notes][Release Notes]]
+    - [[#hilights][Hilights]]
+      - [[#dsl][DSL]]
+      - [[#stdout-from-ansible-playbook][STDOUT from ansible-playbook]]
+      - [[#group-sequence-numers][Group Sequence Numers]]
+  - [[#features-and-cavets][Features and Cavets]]
+    - [[#integration-with-tmux][Integration with TMUX]]
+    - [[#new-stdout-capturing-with-10x][New STDOUT capturing with 1.0.x]]
+    - [[#new-tmux-pane-indexing-with-130][New TMUX Pane indexing with 1.3.0]]
+    - [[#new-sequencing-with-14x][New Sequencing with 1.4.x]]
+  - [[#dsl-terminology--documentation][DSL Terminology & Documentation]]
+    - [[#dsl-1][DSL]]
+      - [[#configuration][configuration]]
+      - [[#playbooks][playbooks]]
+      - [[#group][group]]
+      - [[#book][book]]
+  - [[#installation][Installation]]
+  - [[#use][Use]]
+    - [[#dividing-up-your-specs-in-other-powerplay-files][Dividing up your specs in other PowerPlay files]]
+    - [[#running-powerplay][Running Powerplay]]
+    - [[#example-play-script][Example .play Script]]
+    - [[#submitting-your-example-play-scripts][Submitting your example .play scripts]]
+  - [[#concurrency][Concurrency]]
+    - [[#the-gory-details-behind-how-sync-and-async][The Gory Details behind how :sync and :async]]
+      - [[#nested-groups][Nested Groups]]
+      - [[#implemention-of-the-execution-planning-authoritative][Implemention of the Execution Planning [authoritative]]]
+      - [[#scenarios][Scenarios]]
+  - [[#contributing-to-ansible-powerplay][Contributing to ansible-powerplay]]
+  - [[#copyright][Copyright]]
+  - [[#the-junkyard][The Junkyard]]
+    - [[#old-execution-planning-model][Old execution planning model]]
+    - [[#old-tmux-option-parsing-functional][Old tmux option parsing functional]]
 
+** Synopsis
   #+ATTR_HTML: title="Join the chat at https://gitter.im/flajann2/ansible-powerplay"
   [[https://gitter.im/flajann2/ansible-powerplay?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge][file:https://badges.gitter.im/flajann2/ansible-powerplay.svg]]
 
@@ -38,23 +72,23 @@
      the DSL, most notably, nestable groups, and being
      able to label each group as :sync or :async.
 **** STDOUT from ansible-playbook
-     The capture of the output from ansible-powerplay is 
+     The capture of the output from ansible-powerplay is
      handled a bit more intelligently. If you do not specify the
      --tmux (or -m) option, all output is now currently captured
      by Powerplay and redumped to the console.
 
      Because you may still want to see the color from
-     ansible-powerplay, you can alter ansible.cfg and 
+     ansible-powerplay, you can alter ansible.cfg and
      add the following line:
 
      + force_color = 1
-     
+
      Please see [[New STDOUT capturing with 1.0.x][New STDOUT capturing with 1.0.x]]
 
 **** Group Sequence Numers
      We now allow groups to have sequence numbers, as
      of 1.1. Basically, if you specify a sequence,
-     the variable you designate will be assigned 
+     the variable you designate will be assigned
      a value in each of the sequence, with the
      group re-excuted. for example:
 
@@ -64,7 +98,7 @@
        book :nat, "nat.yml"
        book :dat, "dat.yml"
        book :rat, "rat.yml"
-     end     
+     end
      #+end_src
 
      as you can see (in the development.play sample)
@@ -90,7 +124,7 @@
        book :nat, "nat.yml"
        book :dat, "dat.yml"
        book :rat, "rat.yml"
-     end     
+     end
 
      group :first, "async group without sequencing" do
        configuration do
@@ -108,10 +142,10 @@
        book :nat, "nat.yml"
        book :dat, "dat.yml"
        book :rat, "rat.yml"
-     end     
+     end
      #+end_src
 
-     As you can see, the new sequencing can be quite 
+     As you can see, the new sequencing can be quite
      succinct.
 
 ** Features and Cavets
@@ -172,7 +206,7 @@
 
 *** DSL
     The DSL is straightforward as possible,
-    simple and elegant to allow you to write 
+    simple and elegant to allow you to write
     your Powerplays in a DRY manner.
 
     For examples, please see the following:
@@ -194,7 +228,7 @@
 
     Note that I deliberately left a missing "elasticsearch.yml" so you
     can see how Powerplay handles the errors.
-      
+
 **** configuration
      You can intersperse configuration blocks
      anywhere, and the expected nested scoping
@@ -210,7 +244,7 @@
 **** group
      A group is a collection of books or other groups
      that all execute in parallel by default.
-     Books are required to be independent of 
+     Books are required to be independent of
      each other. If they are not, you can set
      them up to execute serially.
 
@@ -227,7 +261,7 @@
      in, but care must be taken that no vars
      are used in a different manner than expected.
      We currently have no way of knowing which
-     vars are needed or not, and to specifiy that 
+     vars are needed or not, and to specifiy that
      would make the syntax messy and loose some
      of the advantages of var inheritance.
 
@@ -269,7 +303,7 @@
 
    #+BEGIN_SRC ruby
    # sṕecific configuration for :development
-   configuration do 
+   configuration do
     stack :development
     krell_type "t2.small"
     servers 1
@@ -277,7 +311,7 @@
     krell_disk_size 20
    end
    #+END_SRC
-   
+
    The above shows Ansible variables for my
    specialiezd setup that is geared with work
    with AWS. You are free to specify any
@@ -304,7 +338,7 @@
      --extra-vars "playbook_directory=playbooks stack=development krell_type=t2.small servers=1 rolling=3 krell_disk_size=20"
    #+END_SRC
 
-   And if our group had more book entries, as in the second 
+   And if our group had more book entries, as in the second
    example:
 
    #+BEGIN_SRC ruby
@@ -339,14 +373,14 @@
     We mention this here for those who may not be familiar with Ruby,
     but may wish to section off your specifications thusly.
 
-    You don't really need to know any Ruby, but it could increase 
+    You don't really need to know any Ruby, but it could increase
     the span of what you might want to do. To get a quick taste,
     please checkout [[https://www.ruby-lang.org/en/documentation/quickstart/][Ruby in 20 Minutes]].
 
     It is also possible to leverage Ruby's metaprogramming techniques to
     create templates for your specificaitons, but at some point, as time
     allows, I may directly support this in the DSL. Please let your
-    wishes be known to me for this and any other feature you might want to 
+    wishes be known to me for this and any other feature you might want to
     see.
 
 *** Running Powerplay
@@ -361,7 +395,7 @@ Options:
   -v, [--verbose=[1|2|3]]
                            # Default: 0
     #+END_SRC
-    Please use the help feature to explain the subcommands and options. We 
+    Please use the help feature to explain the subcommands and options. We
     shall be adding many more subcommands and options as our needs demands.
     If you like to see something here, please submit it as an issue on Github.
 
@@ -416,7 +450,7 @@ Description:
     #+END_SRC
 
     and go to the examples directory to find test.play.
-    
+
 *** Submitting your example .play scripts
     Please feel free to do pull requests of your
     scripts or submit them to me as Gist snippets
@@ -444,7 +478,7 @@ Description:
     running jobs, or books.  A "job" or a "book"
     represent an actual Ansible Playbook being
     run, or waiting to be run.
-    
+
     | enqueue    | deque and run 'queues' |
     |------------+------------------------|
     | sync_jobs  | sync_runs              |
@@ -528,7 +562,7 @@ Description:
    respond to your pull requests in a timely
    fashion as long as I am not pulling an "Atlas"
    at my current job! lol
- 
+
    + Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
    + Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
    + Fork the project.
@@ -538,7 +572,7 @@ Description:
    + Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
 ** Copyright
-   Copyright (c) 2016 Fred Mitchell. See
+   Copyright (c) 2016-2017 Fred Mitchell. See
    LICENSE.txt for further details.
 
 ** The Junkyard
@@ -585,4 +619,3 @@ Description:
       .reject{ |pty| pty == %x(tty).chop }
       .reject{ |pty| pty == '' }
     #+end_src
-
