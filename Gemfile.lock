@@ -43,7 +43,7 @@ GEM
     highline (1.7.10)
     interception (0.5)
     json (2.1.0)
-    juwelier (2.4.7)
+    juwelier (2.4.9)
       builder
       bundler
       git
@@ -86,7 +86,7 @@ GEM
     pry-byebug (3.5.1)
       byebug (~> 9.1)
       pry (~> 0.10)
-    pry-doc (0.11.1)
+    pry-doc (0.12.0)
       pry (~> 0.9)
       yard (~> 0.9)
     pry-remote (0.1.8)
